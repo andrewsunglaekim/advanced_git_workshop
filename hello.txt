@@ -1,5 +1,7 @@
 Initial commit
 
 -----
-1st commit
+1st commit on master
+-----
+2nd commit on master
 -----
