@@ -2,13 +2,20 @@
 
 ## Requisites
 
-This workshop is primarily designed for those that have a decent foundation in git. You should be familiar with and have used the following commands(in no particular order):
+This workshop is primarily designed for those that have a decent foundation in git. You don't need to be an expert with git. You should be familiar with and have used the following git commands(in no particular order):
 
 ```
-git commit
-git add
-git checkout
-git 
+init
+add
+commit
+checkout
+merge
+pull
+push
+branch
+log
+status
+diff
 ```
 
 ## Learning Objectives
@@ -33,17 +40,26 @@ git
 
 Today we'll be diving deeper into some of the lesser used git commands. With a better understanding of some the more advanced git concepts, we can start to leverage really powerful tools at git's disposal. 
 
-We'll try to dispel some of the fear caused by git.
+We'll try to dispel some of the fear caused by git commands by understanding exactly what happens during those commands.
 
 It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users.
 
-- semantic commit messages
-- coupled with small purposeful commits
-- not using `git add .`
-- 
+## The three trees
+
+When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git: 
+
+#### "The Working Directory"
+This tree is in sync with the local filesystem and is representative of the immediate changes made to content in files and directories.
+
+#### The 'Staging Index'. 
+This tree is tracking Working Directory changes, that have been promoted with git add, to be stored in the next commit.
+
+#### The Commit History
+The final tree is the Commit History of HEAD.
+
 
 ### HEAD
-it can be thought of as a symbolic reference to the checked-out commit.
+It can be thought of as a symbolic reference to the currently checked-out commit.
 
 **linked list*
 
@@ -51,16 +67,10 @@ it can be thought of as a symbolic reference to the checked-out commit.
 
 This is why small purposeful semantic commits can be really helpful for code maintainability. 
 
-## The three trees
-"The Working Directory". This tree is in sync with the local filesystem and is representative of the immediate changes made to content in files and directories.
-
-The 'Staging Index' tree. This tree is tracking Working Directory changes, that have been promoted with git add, to be stored in the next commit.
-
-The final tree is the Commit History of HEAD.
 
 
 
-When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git. 
+
 git reset - https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
 - `--hard` is dangerous, because  
 
