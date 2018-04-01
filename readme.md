@@ -70,9 +70,18 @@ Not only that, commits are aware of where they come from. IE. which commit(s) is
 
 So when we say branches point to a commit, they quite literally hold a reference to a commit.
 
-Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs even when commits themselves are only aware of its direct parents
+Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs and have histories of commits even when commits themselves are only aware of their direct parents.
 
-### bisection
+## `show` and `checkout`
+As git users, we can inspect our changes in a variety of ways.
+
+`git show` ... shows us commit information and the git diff from the commit specified as the argument against it's
+
+## Bisection
+
+The first git command we'll dive into today is `git bisect` Git leverages [binary search](https://en.wikipedia.org/wiki/Binary_search_algorithm) and user input to help identify bad commits through `git bisect`.
+
+In order to
 
 This is why small purposeful semantic commits can be really helpful for code maintainability.
 
