@@ -38,7 +38,7 @@ diff
 
 ## Framing
 
-Today we'll be diving deeper into some of the lesser used git commands. With a better understanding of some the more advanced git concepts, we can start to leverage really powerful tools at git's disposal. 
+Today we'll be diving deeper into some of the lesser used git commands. With a better understanding of some the more advanced git concepts, we can start to leverage really powerful tools at git's disposal.
 
 We'll try to dispel some of the fear caused by git commands by understanding exactly what happens during those commands.
 
@@ -46,26 +46,35 @@ It'll be impossible to cover the entirety of the git ecosystem, but we'll cover 
 
 ## The three trees
 
-When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git: 
+When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
 #### "The Working Directory"
 This tree is in sync with the local filesystem and is representative of the immediate changes made to content in files and directories.
 
-#### The 'Staging Index'. 
+#### The 'Staging Index'.
 This tree is tracking Working Directory changes, that have been promoted with git add, to be stored in the next commit.
 
 #### The Commit History
 The final tree is the Commit History of HEAD.
 
 
-### HEAD
-It can be thought of as a symbolic reference to the currently checked-out commit.
+## HEAD
+It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When you hear something like the tip of the HEAD, it is basically the current commit.
 
-**linked list*
+## Rehash commits and branches
+Commits add the latest changes to a repo. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
+
+Not only that, commits are aware of where they come from. IE. which commit(s) is/are my parent(s).
+
+> Note the `(s)` as commits can have multiple parents from a merge.
+
+So when we say branches point to a commit, they quite literally hold a reference to a commit.
+
+Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs even when commits themselves are only aware of its direct parents
 
 ### bisection
 
-This is why small purposeful semantic commits can be really helpful for code maintainability. 
+This is why small purposeful semantic commits can be really helpful for code maintainability.
 
 
 
@@ -84,13 +93,13 @@ You’ll notice the phrase “fast-forward” in that merge. Because the commit 
 
 You can think of it as a chronological history of everything you’ve done in your local repo.
 
-## Rebasing 
+## Rebasing
 (this workshop exercise/lesson repo example 0.0)
 
 ## Force Push
-This is a scary one for sure. 
+This is a scary one for sure.
 
-First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it. 
+First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
 
 There are some situations where we will want to force push. More often than not, it's because you're rebasing your remote branch locally onto some pure branch like `master` or `test` and you want to push that rebase to the remote.
 
