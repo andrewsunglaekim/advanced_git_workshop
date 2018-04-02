@@ -204,6 +204,54 @@ HEAD~3^2
 
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
+## git reset
+The following command could have disastrous effects on your `HEAD`'s history. Be very careful when resetting.
+
+`git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
+
+> In the following snippets instead of sha's, we will use letters to represent our commit history. `A` being the first commit in the history and `D` being the last commit in the history. HEAD is currently on commit `D`.
+
+#### resetting the `--soft` way.
+In all resets, the commit history(3rd tree) is always changed to reflect the commit passed in.
+
+```
+$ git reset --soft B
+```
+
+This will set `HEAD` and current branch reference to `B`. Whether you pass in `--soft`, `--mixed`, or `--hard`, it will always change the commit history in this way.
+
+When using the `--soft` flag. The diff between `B` and `D` will be staged for commit to reflect a commit that would encompass the changes from `B` to `D`. In other words the "second tree" (the index) has those differences. The `--soft` really just "resets" the commit history(3rd tree).
+
+#### resetting the `--mixed` way(this is the default)
+This is the default mode of reset.
+
+```bash
+$ git reset --mixed B
+# or
+$ git reset B
+```
+Just like in `--soft` the `HEAD` and current branch ref will now point to B. However, the diff between `B` and `D` is not staged. However, that diff still exists in the working directory. So mixed resets both the staging area and the commit history(2nd and 3rd trees)
+
+#### resetting the `--hard` way
+This is by far the most dangerous type of reset. We would only want to use a hard reset if we wanted to time travel to exactly the state of a commit.
+
+```bash
+$ git reset --hard B
+```
+
+All three tree's in this case would "reset" to the state of commit `B`. This means we would lose all traces of commit `C` and `D` and essentially not be able to access them ever again! or not...
+
+## Git Reset - You do
+
+Now that we've identified the bug in our application. Let's do a hard reset on our application to the commit previous to bad commit specified in the `bisect` portion.
+
+Hint use `~` against the bad commit sha to find that commit.
+
+## git reflog
+With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
+
+There is somewhat of a time frame in which you can use these logs. Git does garbage collections and dumps these logs from time to time. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
+
 git reset - https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
 - `--hard` is dangerous, because  
 
