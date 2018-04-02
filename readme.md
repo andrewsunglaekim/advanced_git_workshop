@@ -6,6 +6,7 @@ This workshop is primarily designed for those that have a decent foundation in g
 
 ```
 init
+clone
 add
 commit
 checkout
@@ -127,13 +128,81 @@ $ git bisect good bc08081
 $ git bisect bad b6a0692
 ```
 
-Now that git bisect knows a known good starting point and an end point
+Now that git bisect knows a known good starting point and an end point, it will start stepping us through commits between the good and bad commits in a binary search fashion.
 
-This is why small purposeful semantic commits can be really helpful for code maintainability.
+It'll start at the midway point. It will checkout to the commit that lies as close to the middle between the good and bad commits. It then expect a response between:
 
+- `$ git bisect good`
+- `$ git bisect bad`
 
+If we inspected our code and it's bug free, we would input `$ git bisect good`.
 
+If instead our code had a bug, we would input `$ git bisect bad`.
 
+Depending on the choice we make, git will move the HEAD to the next mid point commit.
+
+If we choose `bad`, it will move HEAD to the midpoint commit in the first half
+
+If we choose `good`, it will move HEAD to the midpoint commit in the second half.
+
+Git repeats this until it identifies the first commit where the code went wrong. Unless we never tell it `bad`.
+
+This is yet another reason why small purposeful semantic commits can be really helpful for code maintainability.
+
+## Git Bisect - You do
+
+Clone down [this repo]() . Open the `index.html` in the browser.
+
+Oh no, all we can see is red. We knew at one time this feature had some pretty pertinent text, but now all we can see is red.
+
+You take a look at the commit history of this repo and you are appalled. There's over a hundred commit and they all have the same commit message.
+
+#### Objective:
+Pinpoint the commit in which the red background bug first occurs.
+
+#### Directions:
+1. Do not look at the code.
+2. Only use browser and terminal.(*hint* refresh your browser after each stage of the bisect)
+3. Use `$ git log --oneline` to find the first and last commits
+4. Use those commits as the `good` and `bad` commits for your `git bisect`
+5. Find the first `bad` commit.
+
+## Targeting commits
+
+Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
+
+One way we saw earlier was providing an exact commit sha. You can also use branches as they point to a commit. What if you wanted something relative to a branch or the HEAD?
+
+Enter `~` and `^`. You've probably seen these before in various stack overflow posts or git blogs. Turns out they have actual meaning!
+
+In the simplest terms:
+
+- `~` means how many ancestors back
+- `^` means which ancestor in the event a commit has multiple parents(think merges)
+
+These operators can also be chained. Here are some examples of `~`:
+
+```
+HEAD~1 # The previous commit of the current head
+HEAD~2 # The commit that is 2 before the current head
+master~1 # The previous commit of the tip of the master branch
+ce70821~1 # The previous commit of the commit sha ce70821
+```
+
+Merging results in a merge commit, therefore that commit will have 2 parents. One parent is the branch we are currently on. The other parent is the branch we move into. For the purposes of the `^`. The branch we are on when merging is the "first" parent and the branch we want to merge in is the "second" parent. If HEAD points to a commit from that resulting merge:
+
+```
+HEAD^1 # this would point to the HEAD commit's first parent. The branch we were on before the merge.
+HEAD^2 # this would point to the HEAD commit's second parent. The branch we merged in.
+```
+
+You can also chain these operators, something like this:
+
+```
+HEAD~3^2
+```
+
+> This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
 git reset - https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
 - `--hard` is dangerous, because  
