@@ -75,13 +75,59 @@ Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data
 ## `show` and `checkout`
 As git users, we can inspect our changes in a variety of ways.
 
-`git show` ... shows us commit information and the git diff from the commit specified as the argument against it's
+`git show` ... shows us commit information and the git diff from the commit specified as the argument against it's direct parent(s)
+
+```bash
+# the argument to show would be some commit sha
+$ git show 148d58e
+```
+
+To have HEAD point to commit you would instead use `checkout`:
+
+```bash
+# the argument to checkout would be some commit sha
+$ git checkout 148d58e
+```
+
+> Depending on the arguments and flags passed to checkout, checkout can also be used against files in your working directory as well.
+
+The above command would point `HEAD` to that commit. Meaning your working directory would reflect the folders and files of the commit passed in.
+
+This above command will also put you in a detached HEAD state. Meaning it is detached from any reference or branch. It still very much exists and is pointing to the commit you specified.
+
+## Detached HEAD
+You might have been in a detached HEAD state before, some git commands put the user into a detached HEAD. If you are to make any commits in a detached HEAD you lose them unless you make a reference to it. IE. a branch.
+
+You can leave a detached HEAD state simply by checking into a branch, something like this:
+
+```
+$ git checkout master
+```
 
 ## Bisection
 
-The first git command we'll dive into today is `git bisect` Git leverages [binary search](https://en.wikipedia.org/wiki/Binary_search_algorithm) and user input to help identify bad commits through `git bisect`.
+The first git command we'll dive into today is `git bisect`.
 
-In order to
+Through git logs we can see that commit histories are linear and "sorted" in terms of sequence of changes.
+
+Git leverages [binary search](https://en.wikipedia.org/wiki/Binary_search_algorithm) and user input to help identify bad commits through `git bisect`.
+
+In order to "bisect" your code. You start with a simple command:
+
+```bash
+$ git bisect start
+```
+
+This will enter your git environment into "BISECTING" mode. If at any point you want to leave, run `$ git bisect reset`.
+
+The next thing that bisect expects is 2 commit sha's. One sha where we know our code base is "correct" and another sha where we know our code base has a bug. The arguments to the following commands are git sha's of a commit history.
+
+```bash
+$ git bisect good bc08081
+$ git bisect bad b6a0692
+```
+
+Now that git bisect knows a known good starting point and an end point
 
 This is why small purposeful semantic commits can be really helpful for code maintainability.
 
