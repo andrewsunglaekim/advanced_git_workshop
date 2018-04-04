@@ -230,7 +230,7 @@ $ git reset --mixed B
 # or
 $ git reset B
 ```
-Just like in `--soft` the `HEAD` and current branch ref will now point to B. However, the diff between `B` and `D` is not staged. However, that diff still exists in the working directory. So mixed resets both the staging area and the commit history(2nd and 3rd trees)
+Just like in `--soft` the `HEAD` and current branch ref will now point to B. However, the diff between `B` and `D` is not staged. However, that diff still exists in the working directory. So mixed resets both the staging area and the commit history(2nd and 3rd trees) but the working directory(1st tree) will have the changes from `C` and `D`
 
 #### resetting the `--hard` way
 This is by far the most dangerous type of reset. We would only want to use a hard reset if we wanted to time travel to exactly the state of a commit.
@@ -239,18 +239,110 @@ This is by far the most dangerous type of reset. We would only want to use a har
 $ git reset --hard B
 ```
 
-All three tree's in this case would "reset" to the state of commit `B`. This means we would lose all traces of commit `C` and `D` and essentially not be able to access them ever again! or not...
+All three tree's in this case would "reset" to the state of commit `B`. This means we would lose all traces of commit `C` and `D` and essentially not be able to access them ever again! or not...?
 
 ## Git Reset - You do
 
-Now that we've identified the bug in our application. Let's do a hard reset on our application to the commit previous to bad commit specified in the `bisect` portion.
+Now that we've identified the bug in our application. Let's do a hard reset on our application to the commit previous to the bad commit specified in the `bisect` portion.
 
 Hint use `~` against the bad commit sha to find that commit.
 
 ## git reflog
 With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
 
-There is somewhat of a time frame in which you can use these logs. Git does garbage collections and dumps these logs from time to time. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
+The default expiration time for reflog entries is 90 days. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
+
+#### references
+
+References, the namesake of `reflog` more commonly known as branches, point to a commit. Quite literally, there is a file with the branch's name in the `.git` directory that has a commit sha of the the commit it is pointing to. Go into any repository with a master branch and run this command:
+
+```bash
+$ cat .git/refs/heads/master
+```
+
+Then compare that with the tip of `master`'s git log. All this to say, branches point to a commit.
+
+
+#### `reflog`
+Git tracks these branches in a place that isn't ... the branches. It's the `reflog`. Reference logs record when the tips of branches and other references were updated in the local repository. Reflogs are useful in various Git commands, to specify the old value of a reference.
+The most generic `reflog` is simply:
+
+```bash
+$ git reflog
+```
+
+What you'll see is the default reference log for the `HEAD`. Any change `HEAD` makes, `reflog` will list it out. Each line contains:
+
+- abbreviated commit sha
+- a pointer or reference
+- action type(eg. commit, reset, checkout, etc.)
+- commit message or description
+
+Often times parsing the default `reflog` can be pretty terse and hard to reason about. There are lot's of commands, arguments and flags that can be passed to the `reflog` command.
+
+This one for example will instead of showing each step `HEAD` goes through, will show a relative time/date instead.
+
+```bash
+$ git reflog --relative-date
+```
+
+One useful one is:
+
+```bash
+$ git reflog show --all
+```
+
+We can see all actions that are updates to the tips of all the branches. It will filter a bit of the excess noise that we get from the default reference log.
+
+We can additionally specify branches to show the reference log for a specific branch:
+
+```bash
+$ git reflog master
+```
+
+We could combine some commands, something like this:
+
+```bash
+$ git reflog --relative-date master
+```
+
+We can even pass in times:
+
+```bash
+$ git reflog master@{1.day.1.hourago}
+```
+
+The above command will output a reference log for master that starts with any changes made 25 hours prior to current time.
+
+We can pass in steps as well like `HEAD@{2}`. And this would be the reference log for all changes prior to 2 changes from the current state of `HEAD`.
+
+#### Leveraging pointers or commit sha's to rewrite history.
+The reflog gives us everything we would want in terms of rewriting history to historical references. We can use either the sha or pointer of a `reflog` entry.
+
+Examples:
+Our `reflog` for master might look something like this:
+
+```
+33e8ab2 master@{0}: commit: 3rd commit
+e054213 master@{1}: commit: 2nd commit
+d57537e master@{2}: commit: 1st commit
+bbc0c23 master@{3}: commit: initial commit
+```
+
+We could time travel in these ways:
+```
+# each pair is functionally equivalent
+$ git checkout e054213
+$ git checkout master@{1}
+
+$ git reset --soft d57537e
+$ git reset --soft master@{1}
+```
+
+> these "pointers" can be used in other commands to. With something like `git diff`, we could examine the differences in our branch from the current state to a time interval we specify.
+
+
+
 
 git reset - https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
 - `--hard` is dangerous, because  
