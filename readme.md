@@ -34,7 +34,6 @@ diff
 - git merge revsisted
 - Use git rebase to rewrite history onto a new branches tip.
 - Identify some advantages and disadvantages of workflows involving rebase versus merge.
-- Use `git cherry-pick` to choose a commit to apply to the HEAD.
 - identify needs to force push to remote repositories
 
 ## Framing
@@ -392,7 +391,10 @@ You're back to square 1, everything is red still. Fortunately you still have the
 1. On the branch you created earlier(post reflog), revert the bad commit from the bisection in the first exercise.
 2. Inspect the `index.html` in the browser.
 
-## Git Merge
+## Git Merge & Git diff
+We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
+
+We now have a few options. First, let’s cover how to get out of this situation. If you perhaps weren’t expecting conflicts and don’t want to quite deal with the situation yet, you can simply back out of the merge with git merge --abort.
 
 git diff - https://stackoverflow.com/questions/1191282/how-to-see-the-changes-between-two-commits-without-commits-in-between
 
@@ -406,13 +408,28 @@ You can think of it as a chronological history of everything you’ve done in yo
 
 ## Rebasing
 (this workshop exercise/lesson repo example 0.0)
+Do not rebase commits that exist outside your repository
+
+
+
+## Merge vs Rebase
+
+Which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream (merging) version control should know about this merge happening.
+
+Another perspective is that we want to catalog code changes not meta data about how we are versioning.
+
+In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already.
+
+If we find ourselves asking if we should be rebasing or merging, really the answer lies in understanding how rebasing and merging effect git history and then determining a course of action.
+
+
 
 ## Force Push
 This is a scary one for sure.
 
 First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
 
-There are some situations where we will want to force push. More often than not, it's because we're rebasing our remote branch locally onto some pure branch like `master` or `test` and we want to push that rebased branch to the remote.
+There are some situations where we will want to force push. More often than not, it's because we're rebasing our remote branch locally onto some pure branch like `master` or `test` and we want to push that rebased branch to the remote. If we've already pushed the non rebased version, we need to force push the rebased version.
 
 In a force push, we are quite literally telling the remote branch to stop pointing at its current commit and instead point to the same commit that our local HEAD is pointing to.
 
