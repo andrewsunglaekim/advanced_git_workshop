@@ -46,7 +46,6 @@ We'll try to dispel some of the fear caused by git commands by understanding exa
 It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users.
 
 ## The three trees
-
 When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
 #### "The Working Directory"
@@ -60,10 +59,10 @@ The final tree is the Commit History of HEAD.
 
 
 ## HEAD
-It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When you hear something like the tip of the HEAD, it is basically the current commit.
+It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When we hear something like the `HEAD` is on the tip of master, then we would be on the master branch.
 
 ## Rehash commits and branches
-Commits add the latest changes to a repo. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
+Commits are changes to a repository. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
 
 Not only that, commits are aware of where they come from. IE. which commit(s) is/are my parent(s).
 
@@ -83,21 +82,21 @@ As git users, we can inspect our changes in a variety of ways.
 $ git show 148d58e
 ```
 
-To have HEAD point to commit you would instead use `checkout`:
+To have HEAD point to a commit we would instead use `checkout`:
 
 ```bash
 # the argument to checkout would be some commit sha
 $ git checkout 148d58e
 ```
 
-> Depending on the arguments and flags passed to checkout, checkout can also be used against files in your working directory as well.
+> Depending on the arguments and flags passed to checkout, checkout can also be used against files in our working directory as well. `git checkout -- fileName` or `git checkout fileName` use the prior incase we wanted a branch called `fileName`
 
-The above command would point `HEAD` to that commit. Meaning your working directory would reflect the folders and files of the commit passed in.
+The above command would point `HEAD` to that commit. Meaning our working directory would reflect the folders and files of the commit passed in.
 
-This above command will also put you in a detached HEAD state. Meaning it is detached from any reference or branch. It still very much exists and is pointing to the commit you specified.
+This above command will also put us in a detached HEAD state. Meaning it is detached from any reference or branch. It still very much exists and is pointing to the commit we specified.
 
 ## Detached HEAD
-You might have been in a detached HEAD state before, some git commands put the user into a detached HEAD. If you are to make any commits in a detached HEAD you lose them unless you make a reference to it. IE. a branch.
+We might have been in a detached HEAD state before, some git commands put the user into a detached HEAD. If we are to make any commits in a detached HEAD we lose them unless we make a reference to it. IE. a branch.
 
 You can leave a detached HEAD state simply by checking into a branch, something like this:
 
@@ -107,30 +106,32 @@ $ git checkout master
 
 ## Bisection
 
-The first git command we'll dive into today is `git bisect`.
+There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, initial feature we've implemented breaks, but have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point which commit breaks the code. Enter `git bisect`.
 
 Through git logs we can see that commit histories are linear and "sorted" in terms of sequence of changes.
 
-Git leverages [binary search](https://en.wikipedia.org/wiki/Binary_search_algorithm) and user input to help identify bad commits through `git bisect`.
+Git leverages [binary search](https://en.wikipedia.org/wiki/Binary_search_algorithm) and user input to help identify bad commits through `git bisect`. Let's see how it works.
 
-In order to "bisect" your code. You start with a simple command:
+In order to "bisect" our code. We start with a simple command:
 
 ```bash
 $ git bisect start
 ```
 
-This will enter your git environment into "BISECTING" mode. If at any point you want to leave, run `$ git bisect reset`.
+This will enter our git environment into "BISECTING" mode. If at any point we want to leave, run `$ git bisect reset`.
 
-The next thing that bisect expects is 2 commit sha's. One sha where we know our code base is "correct" and another sha where we know our code base has a bug. The arguments to the following commands are git sha's of a commit history.
+The next thing that bisect expects is 2 commit sha's. One sha where we know our code base is "correct" and another sha where we know our code base has a bug. Example:
 
 ```bash
 $ git bisect good bc08081
 $ git bisect bad b6a0692
 ```
 
+> The arguments to the following commands are git sha's of a commit history.
+
 Now that git bisect knows a known good starting point and an end point, it will start stepping us through commits between the good and bad commits in a binary search fashion.
 
-It'll start at the midway point. It will checkout to the commit that lies as close to the middle between the good and bad commits. It then expect a response between:
+It'll start at the midway point. It will checkout to the commit that lies as close to the middle between the good and bad commits. It then expects a response between:
 
 - `$ git bisect good`
 - `$ git bisect bad`
@@ -147,7 +148,7 @@ If we choose `good`, it will move HEAD to the midpoint commit in the second half
 
 Git repeats this until it identifies the first commit where the code went wrong. Unless we never tell it `bad`.
 
-This is yet another reason why small purposeful semantic commits can be really helpful for code maintainability.
+This is yet another reason why small purposeful semantic commits can be really helpful for code maintainability. If we're writing code that needs to compile, this is a great reason to make sure to only commit code that compiles.
 
 ## Git Bisect - You do
 
@@ -160,27 +161,28 @@ You take a look at the commit history of this repo and you are appalled. There's
 #### Objective:
 Pinpoint the commit in which the red background bug first occurs.
 
-#### Directions:
+#### Directions/Rules:
 1. Do not look at the code.
 2. Only use browser and terminal.(*hint* refresh your browser after each stage of the bisect)
-3. Use `$ git log --oneline` to find the first and last commits
-4. Use those commits as the `good` and `bad` commits for your `git bisect`
+3. Use `$ git log --oneline` to find the first and last commits(`ctrl` + `d` will allow you to page down your `git log`)
+4. Use those commits as the `good`(first) and `bad`(last) commits for your `git bisect`
 5. Find the first `bad` commit.
+6. Record this commit sha for the following exercises in this workshop
 
 ## Targeting commits
 
 Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
 
-One way we saw earlier was providing an exact commit sha. You can also use branches as they point to a commit. What if you wanted something relative to a branch or the HEAD?
+One way we saw earlier was providing an exact commit sha. We can also use branches as they point to a commit. What if we wanted something relative to a branch or the HEAD? IE. I want the parent of the the current commit `HEAD` is on.
 
-Enter `~` and `^`. You've probably seen these before in various stack overflow posts or git blogs. Turns out they have actual meaning!
+Enter `~` and `^`. We've probably seen these before in various stack overflow posts or git blogs. Turns out they have actual meaning!
 
 In the simplest terms:
 
 - `~` means how many ancestors back
 - `^` means which ancestor in the event a commit has multiple parents(think merges)
 
-These operators can also be chained. Here are some examples of `~`:
+Here are some examples of `~`:
 
 ```
 HEAD~1 # The previous commit of the current head
@@ -196,7 +198,7 @@ HEAD^1 # this would point to the HEAD commit's first parent. The branch we were 
 HEAD^2 # this would point to the HEAD commit's second parent. The branch we merged in.
 ```
 
-You can also chain these operators, something like this:
+We can also chain these operators, something like this:
 
 ```
 HEAD~3^2
@@ -205,7 +207,7 @@ HEAD~3^2
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
 ## git reset
-The following command could have disastrous effects on your `HEAD`'s history. Be very careful when resetting.
+The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting.
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
 
@@ -218,9 +220,11 @@ In all resets, the commit history(3rd tree) is always changed to reflect the com
 $ git reset --soft B
 ```
 
-This will set `HEAD` and current branch reference to `B`. Whether you pass in `--soft`, `--mixed`, or `--hard`, it will always change the commit history in this way.
+This will set `HEAD` and current branch reference to `B`. Whether we pass in `--soft`, `--mixed`, or `--hard`, it will always change the commit history in this way.
 
 When using the `--soft` flag. The diff between `B` and `D` will be staged for commit to reflect a commit that would encompass the changes from `B` to `D`. In other words the "second tree" (the index) has those differences. The `--soft` really just "resets" the commit history(3rd tree).
+
+We might want to do a soft reset when we like the commits we've made, but we want to tack on a bit more to it, kind of like an amend to a commit
 
 #### resetting the `--mixed` way(this is the default)
 This is the default mode of reset.
@@ -262,7 +266,6 @@ $ cat .git/refs/heads/master
 
 Then compare that with the tip of `master`'s git log. All this to say, branches point to a commit.
 
-
 #### `reflog`
 Git tracks these branches in a place that isn't ... the branches. It's the `reflog`. Reference logs record when the tips of branches and other references were updated in the local repository. Reflogs are useful in various Git commands, to specify the old value of a reference.
 The most generic `reflog` is simply:
@@ -271,14 +274,14 @@ The most generic `reflog` is simply:
 $ git reflog
 ```
 
-What you'll see is the default reference log for the `HEAD`. Any change `HEAD` makes, `reflog` will list it out. Each line contains:
+What we'll see is the default reference log for the `HEAD`. Any change `HEAD` makes, `reflog` will list it out. Each line contains:
 
 - abbreviated commit sha
-- a pointer or reference
+- a [gitrevision](https://www.git-scm.com/docs/gitrevisions)
 - action type(eg. commit, reset, checkout, etc.)
 - commit message or description
 
-Often times parsing the default `reflog` can be pretty terse and hard to reason about. There are lot's of commands, arguments and flags that can be passed to the `reflog` command.
+Often times parsing the default `reflog` can be pretty terse and hard to reason about. There are lot's of commands, arguments and flags that can be passed to the `reflog` command to help us out with that.
 
 This one for example will instead of showing each step `HEAD` goes through, will show a relative time/date instead.
 
@@ -309,7 +312,7 @@ $ git reflog --relative-date master
 We can even pass in times:
 
 ```bash
-$ git reflog master@{1.day.1.hourago}
+$ git reflog master@{1.day.1.hour.ago}
 ```
 
 The above command will output a reference log for master that starts with any changes made 25 hours prior to current time.
@@ -320,7 +323,7 @@ We can pass in steps as well like `HEAD@{2}`. And this would be the reference lo
 The reflog gives us everything we would want in terms of rewriting history to historical references. We can use either the sha or pointer of a `reflog` entry.
 
 Examples:
-Our `reflog` for master might look something like this:
+Say we have a `reflog` for master that looks something like this:
 
 ```
 33e8ab2 master@{0}: commit: 3rd commit
@@ -336,16 +339,60 @@ $ git checkout e054213
 $ git checkout master@{1}
 
 $ git reset --soft d57537e
-$ git reset --soft master@{1}
+$ git reset --soft master@{2}
 ```
 
 > these "pointers" can be used in other commands to. With something like `git diff`, we could examine the differences in our branch from the current state to a time interval we specify.
 
+## Git Reflog - You do
 
+OH. NO. We lost some pretty crucial features when we did that last reset. We need to get that code back.
 
+#### Directions
+1. Use `git reflog` to find the gitrevision(eg. `HEAD@{2}` or `master@{1}`) or commit sha that you need to get back to prior to the reset done earlier in the workshop.  
+2. Once on that commit, checkout to a new branch(call it whatever you'd like)
 
-git reset - https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
-- `--hard` is dangerous, because  
+## Git revert
+
+Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
+
+```
+$ git revert <some-git-sha>
+
+# might actually look something like this:
+$ git revert 67f68c
+```
+
+If at this point we have a merge conflict, we will resolve it then stage the fixed changes then run:
+
+```
+$ git revert --continue
+```
+
+If there wasn't a merge conflict, it will open our text editor for the commit message for the revert.
+
+You can actually revert a series of commits; however, each of these commits will have its own commit to revert.
+
+```
+$ git revert <beginning-git-sha>..<final-git-sha>
+
+# might actually look something like this:
+$ git revert 67f68c..186ecd
+```
+
+This would revert every commit inclusively between `67f68c` and `186ecd`.
+
+> We need to make sure that the commits passed in are of the same history and the first argument proceeds the second in the history.
+
+## Git revert - You do
+
+You're back to square 1, everything is red still. Fortunately you still have the commit sha that introduces the bug. You do still have that, right?
+
+#### Directions
+1. On the branch you created earlier(post reflog), revert the bad commit from the bisection in the first exercise.
+2. Inspect the `index.html` in the browser.
+
+## Git Merge
 
 git diff - https://stackoverflow.com/questions/1191282/how-to-see-the-changes-between-two-commits-without-commits-in-between
 
@@ -365,10 +412,10 @@ This is a scary one for sure.
 
 First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
 
-There are some situations where we will want to force push. More often than not, it's because you're rebasing your remote branch locally onto some pure branch like `master` or `test` and you want to push that rebase to the remote.
+There are some situations where we will want to force push. More often than not, it's because we're rebasing our remote branch locally onto some pure branch like `master` or `test` and we want to push that rebased branch to the remote.
 
-In a force push, we are quite literally telling the remote branch to stop pointing at its current commit and instead point to the same commit that your local HEAD is pointing to.
+In a force push, we are quite literally telling the remote branch to stop pointing at its current commit and instead point to the same commit that our local HEAD is pointing to.
 
 This can have pretty disastrous effect if someone else is working off of that branch as they potentially couldn't reconcile changes against it anymore.
 
-In short, be very cognizant when leveraging a force push. And if you're unsure, it's better to ask someone.
+In short, be very cognizant when leveraging a force push. And if we're unsure, it's better to ask someone.
