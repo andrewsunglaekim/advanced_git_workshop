@@ -190,6 +190,8 @@ master~1 # The previous commit of the tip of the master branch
 ce70821~1 # The previous commit of the commit sha ce70821
 ```
 
+> `~` and `^` by themselves always refer to the first parent.
+
 Merging results in a merge commit, therefore that commit will have 2 parents. One parent is the branch we are currently on. The other parent is the branch we move into. For the purposes of the `^`. The branch we are on when merging is the "first" parent and the branch we want to merge in is the "second" parent. If HEAD points to a commit from that resulting merge:
 
 ```
@@ -223,7 +225,7 @@ This will set `HEAD` and current branch reference to `B`. Whether we pass in `--
 
 When using the `--soft` flag. The diff between `B` and `D` will be staged for commit to reflect a commit that would encompass the changes from `B` to `D`. In other words the "second tree" (the index) has those differences. The `--soft` really just "resets" the commit history(3rd tree).
 
-We might want to do a soft reset when we like the commits we've made, but we want to tack on a bit more to it, kind of like an amend to a commit
+We might want to do a soft reset when we like the commits we've made, but we want to tack on a bit more to it, kind of like an amend to a commit. It would be another way to "squash" commits as well(more on that later)
 
 #### resetting the `--mixed` way(this is the default)
 This is the default mode of reset.
@@ -266,7 +268,9 @@ $ cat .git/refs/heads/master
 Then compare that with the tip of `master`'s git log. All this to say, branches point to a commit.
 
 #### `reflog`
-Git tracks these branches in a place that isn't ... the branches. It's the `reflog`. Reference logs record when the tips of branches and other references were updated in the local repository. Reflogs are useful in various Git commands, to specify the old value of a reference.
+
+Git tracks these branches in a place that isn't ... the branches. It's the `reflog`. We can think of the `reflog` as a chronological history of everything we've done in our local repo. Reference logs record when the tips of branches and other references were updated in the local repository. Reflogs are useful in various Git commands, to specify the value of a reference for a commit that isn't able to be accessed through `git log`.
+
 The most generic `reflog` is simply:
 
 ```bash
@@ -317,6 +321,8 @@ $ git reflog master@{1.day.1.hour.ago}
 The above command will output a reference log for master that starts with any changes made 25 hours prior to current time.
 
 We can pass in steps as well like `HEAD@{2}`. And this would be the reference log for all changes prior to 2 changes from the current state of `HEAD`.
+
+> One thing about the `reflog` to note is that reference logs are local. That is to say your reference log and your teammates reference log of the same project will be disparate.
 
 #### Leveraging pointers or commit sha's to rewrite history.
 The reflog gives us everything we would want in terms of rewriting history to historical references. We can use either the sha or pointer of a `reflog` entry.
@@ -391,45 +397,94 @@ You're back to square 1, everything is red still. Fortunately you still have the
 1. On the branch you created earlier(post reflog), revert the bad commit from the bisection in the first exercise.
 2. Inspect the `index.html` in the browser.
 
-## Git Merge & Git diff
+## Git Merge
+When working with teams on a project, there will often be times where we need to pull changes from a remote repository. We have two main ways to integrate changes from the upstream. One most of us are familiar with is `git merge` the other not as well known method is `git rebase`.
+
 We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
 
-We now have a few options. First, let’s cover how to get out of this situation. If you perhaps weren’t expecting conflicts and don’t want to quite deal with the situation yet, you can simply back out of the merge with git merge --abort.
+> With regard to the `^` symbol, `^1` would be the branch you are on, and `^2` would be the branch that is being merged in.
 
-git diff - https://stackoverflow.com/questions/1191282/how-to-see-the-changes-between-two-commits-without-commits-in-between
-
-## git merge
-
-You’ll notice the phrase “fast-forward” in that merge. Because the commit C4 pointed to by the branch hotfix you merged in was directly ahead of the commit C2 you’re on, Git simply moves the pointer forward. To phrase that another way, when you try to merge one commit with a commit that can be reached by following the first commit’s history, Git simplifies things by moving the pointer forward because there is no divergent work to merge together — this is called a “fast-forward.”
-
-## REFLOG
-
-You can think of it as a chronological history of everything you’ve done in your local repo.
+When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create commit when we start to talk about merging versus rebasing.
 
 ## Rebasing
-(this workshop exercise/lesson repo example 0.0)
-Do not rebase commits that exist outside your repository
+Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
 
+[`git rebase`](https://git-scm.com/docs/git-rebase) finds the common ancestor between the branch that we want to rebase and the branch we're rebasing on to. It then "removes" the commits of the rebasing branch until that common ancestor. Then it moves the branch's(the one that's rebasing) tip to the tip of the branch we are rebasing on to. Then it reapplies the same commits that were removed on that new tip.
 
+> The reapplied commits are actually brand new commits with different pointers (git sha's).
+
+To rebase, simply run:
+
+```
+$ git rebase <branch-rebasing-onto> <branch-rebasing>
+
+# OR if you are on the branch that you want to rebase on a new tip
+$ git rebase <branch-rebasing-onto>
+```
+
+An example of what this might actually look like:
+
+```
+$ git rebase master feature
+
+# OR
+$ git checkout feature
+$ git rebase master
+```
+
+If it goes smoothly, we won't even have to do anything. All our changes will be intact on the new base and we can continue to work. If it doesn't go smoothly ...
+
+#### Merge conflicts
+Just like with merges, git doesn't know what to do if the two branches edit the same file. It will create a merge conflict in a rebase as well.
+
+We'll fix the conflict like we normally would in a merge.
+
+Stage the changes of that merge,
+
+but **DO NOT** commit. Instead:
+
+```
+$ git rebase --continue
+```
+
+> If we accidentally commit, we can run `$ git reset --soft HEAD^`. Hmm, What would that do?
+
+If at any point we want to opt out of the rebase entirely, we can always run:
+
+```
+$ git rebase --abort
+```
+
+We'll have to do this for potentially every commit that is being replayed.
+
+Throughout this whole process, we have never made a commit documenting that we were integrating changes from the upstream. It is as if we had written off of this new base the whole time. Rebasing reduces the noise of merge commits in your git history.
+
+As nice as rebasing is, there are some serious dangers to it. Remember, we are rewriting history. Any time we rewrite history, we should be cautious.
+
+Imagine a scenario where we are working on a feature branch and someone else is assigned to that feature as well. We both have branched off from the feature branch and working on things to make this feature work. Then a third person unknowingly comes along and rebases the feature branch onto master to integrate some changes from a different feature. Now we have no way of reconciling our changes against the new history and git gets really confused.
+
+The golden rule of rebasing is:
+
+**Don't rebase things that exist outside your(local) repository**.
+
+If we violate this rule, it's only because no one else is using our pushed code that we'd like to rebase.
 
 ## Merge vs Rebase
 
-Which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream (merging) version control should know about this merge happening.
+So, which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream (merging) version control should know about this merge happening and document it always.
 
 Another perspective is that we want to catalog code changes not meta data about how we are versioning.
 
+If we find ourselves asking if we should be rebasing or merging, the answer lies in understanding how rebasing and merging effect git history and then determining a course of action.
+
 In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already.
-
-If we find ourselves asking if we should be rebasing or merging, really the answer lies in understanding how rebasing and merging effect git history and then determining a course of action.
-
-
 
 ## Force Push
 This is a scary one for sure.
 
 First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
 
-There are some situations where we will want to force push. More often than not, it's because we're rebasing our remote branch locally onto some pure branch like `master` or `test` and we want to push that rebased branch to the remote. If we've already pushed the non rebased version, we need to force push the rebased version.
+There are some situations where we will want to force push. More often than not, it's because we've already pushed a remote branch but we're rebasing our branch locally to integrate some changes from the upstream and we want to push that rebased branch to the remote. If we've already pushed the non rebased version, we need to force push the rebased version.
 
 In a force push, we are quite literally telling the remote branch to stop pointing at its current commit and instead point to the same commit that our local HEAD is pointing to.
 
