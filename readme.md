@@ -36,6 +36,8 @@ diff
 - Identify some advantages and disadvantages of workflows involving rebase versus merge.
 - identify needs to force push to remote repositories
 
+> Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge. Most of the Headers in this workshop markdown are links to one of those two resources in the specified topic.
+
 ## Framing
 
 Today we'll be diving deeper into some of the lesser used git commands. With a better understanding of some the more advanced git concepts, we can start to leverage really powerful tools at git's disposal.
@@ -44,13 +46,13 @@ We'll try to dispel some of the fear caused by git commands by understanding exa
 
 It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users.
 
-## The three trees
+## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
 When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
 #### "The Working Directory"
 This tree is in sync with the local filesystem and is representative of the immediate changes made to content in files and directories.
 
-#### The 'Staging Index'.
+#### The "Staging Index".
 This tree is tracking Working Directory changes, that have been promoted with git add, to be stored in the next commit.
 
 #### The Commit History
@@ -71,7 +73,7 @@ So when we say branches point to a commit, they quite literally hold a reference
 
 Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs and have histories of commits even when commits themselves are only aware of their direct parents.
 
-## `show` and `checkout`
+## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)
 As git users, we can inspect our changes in a variety of ways.
 
 `git show` ... shows us commit information and the git diff from the commit specified as the argument against it's direct parent(s)
@@ -88,24 +90,29 @@ To have HEAD point to a commit we would instead use `checkout`:
 $ git checkout 148d58e
 ```
 
-> Depending on the arguments and flags passed to checkout, checkout can also be used against files in our working directory as well. `git checkout -- fileName` or `git checkout fileName` use the prior incase we wanted a branch called `fileName`
+> Depending on the arguments and flags passed to checkout, checkout can also be used against files in our working directory as well. `git checkout -- fileName` or `git checkout fileName` use the prior incase we had a branch called `fileName`
 
 The above command would point `HEAD` to that commit. Meaning our working directory would reflect the folders and files of the commit passed in.
 
-This above command will also put us in a detached HEAD state. Meaning it is detached from any reference or branch. It still very much exists and is pointing to the commit we specified.
+This above command will also put us in a detached HEAD state. Meaning it is detached from any reference or branch. The `HEAD` still very much exists and is pointing to the commit we specified.
 
-## Detached HEAD
-We might have been in a detached HEAD state before, some git commands put the user into a detached HEAD. If we are to make any commits in a detached HEAD we lose them unless we make a reference to it. IE. a branch.
+## [Detached HEAD](https://git-scm.com/docs/git-checkout#_detached_head)
+It means simply that HEAD refers to a specific commit, as opposed to referring to a named branch. We might have been in a detached HEAD state before, some git commands put the user into a detached HEAD.
+
+If we are to make any commits in a detached HEAD we lose them unless we make a reference to it. IE. a branch.
 
 You can leave a detached HEAD state simply by checking into a branch, something like this:
 
 ```
 $ git checkout master
+
+# or if we want to point the commit to a new reference
+$ git checkout -b some-branch-name
 ```
 
-## Bisection
+## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git)
 
-There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, initial feature we've implemented breaks, but have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point which commit breaks the code. Enter `git bisect`.
+There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point which commit breaks the code. Enter `git bisect`.
 
 Through git logs we can see that commit histories are linear and "sorted" in terms of sequence of changes.
 
@@ -126,18 +133,26 @@ $ git bisect good bc08081
 $ git bisect bad b6a0692
 ```
 
-> The arguments to the following commands are git sha's of a commit history.
+> The arguments to the following commands are git sha's of a commit history. If our bad commit is at the `HEAD`, then we can run `$ git bisect bad` without an argument.
 
-Now that git bisect knows a known good starting point and an end point, it will start stepping us through commits between the good and bad commits in a binary search fashion.
+Now that git bisect knows a known good starting point and an end point, it will start stepping us through commits in a binary search fashion.
 
 It'll start at the midway point. It will checkout to the commit that lies as close to the middle between the good and bad commits. It then expects a response between:
 
 - `$ git bisect good`
 - `$ git bisect bad`
 
-If we inspected our code and it's bug free, we would input `$ git bisect good`.
+If we inspected our code and it's bug free, we would input:
 
-If instead our code had a bug, we would input `$ git bisect bad`.
+```
+$ git bisect good
+```
+
+If instead our code had a bug, we would input:
+
+```
+$ git bisect bad
+```
 
 Depending on the choice we make, git will move the HEAD to the next mid point commit.
 
@@ -163,12 +178,12 @@ Pinpoint the commit in which the red background bug first occurs.
 #### Directions/Rules:
 1. Do not look at the code.
 2. Only use browser and terminal.(*hint* refresh your browser after each stage of the bisect)
-3. Use `$ git log --oneline` to find the first and last commits(`ctrl` + `d` will allow you to page down your `git log`)
+3. Use `$ git log --oneline` to find the first and last commits(`ctrl` + `d/u` will allow you to page down/up your `git log`)
 4. Use those commits as the `good`(first) and `bad`(last) commits for your `git bisect`
 5. Find the first `bad` commit.
 6. Record this commit sha for the following exercises in this workshop
 
-## Targeting commits
+## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection)
 
 Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
 
@@ -184,6 +199,7 @@ In the simplest terms:
 Here are some examples of `~`:
 
 ```
+HEAD~ # The previous commit of the current head
 HEAD~1 # The previous commit of the current head
 HEAD~2 # The commit that is 2 before the current head
 master~1 # The previous commit of the tip of the master branch
@@ -195,8 +211,9 @@ ce70821~1 # The previous commit of the commit sha ce70821
 Merging results in a merge commit, therefore that commit will have 2 parents. One parent is the branch we are currently on. The other parent is the branch we move into. For the purposes of the `^`. The branch we are on when merging is the "first" parent and the branch we want to merge in is the "second" parent. If HEAD points to a commit from that resulting merge:
 
 ```
-HEAD^1 # this would point to the HEAD commit's first parent. The branch we were on before the merge.
-HEAD^2 # this would point to the HEAD commit's second parent. The branch we merged in.
+HEAD^ # this would point to the HEAD commit's first parent. The commit we were on before the merge.
+HEAD^1 # this would point to the HEAD commit's first parent. The commit we were on before the merge.
+HEAD^2 # this would point to the HEAD commit's second parent. The commit we merged in.
 ```
 
 We can also chain these operators, something like this:
@@ -207,7 +224,7 @@ HEAD~3^2
 
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
-## git reset
+## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
 The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting.
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
@@ -252,7 +269,7 @@ Now that we've identified the bug in our application. Let's do a hard reset on o
 
 Hint use `~` against the bad commit sha to find that commit.
 
-## git reflog
+## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)
 With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
 
 The default expiration time for reflog entries is 90 days. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
@@ -357,7 +374,7 @@ OH. NO. We lost some pretty crucial features when we did that last reset. We nee
 1. Use `git reflog` to find the gitrevision(eg. `HEAD@{2}` or `master@{1}`) or commit sha that you need to get back to prior to the reset done earlier in the workshop.  
 2. Once on that commit, checkout to a new branch(call it whatever you'd like)
 
-## Git revert
+## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)
 
 Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
 
@@ -397,7 +414,7 @@ You're back to square 1, everything is red still. Fortunately you still have the
 1. On the branch you created earlier(post reflog), revert the bad commit from the bisection in the first exercise.
 2. Inspect the `index.html` in the browser.
 
-## Git Merge
+## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 When working with teams on a project, there will often be times where we need to pull changes from a remote repository. We have two main ways to integrate changes from the upstream. One most of us are familiar with is `git merge` the other not as well known method is `git rebase`.
 
 We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
@@ -491,3 +508,11 @@ In a force push, we are quite literally telling the remote branch to stop pointi
 This can have pretty disastrous effect if someone else is working off of that branch as they potentially couldn't reconcile changes against it anymore.
 
 In short, be very cognizant when leveraging a force push. And if we're unsure, it's better to ask someone.
+
+
+# Bonus commands!
+## [git stash](https://git-scm.com/book/en/v1/Git-Tools-Stashing)
+
+## git commit --ammend
+
+## the `-p` flag
