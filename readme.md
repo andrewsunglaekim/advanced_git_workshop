@@ -19,7 +19,7 @@ status
 diff
 ```
 
-## Learning Objectives
+## Learning Objectives (5/5)
 
 - Describe the three trees of git
 - Identify what the HEAD in git is.
@@ -31,16 +31,16 @@ diff
 - Reset git history using reset
 - Access reference logs to undo the terrible things.
 - Use `git revert` to "revert" a commit
-- git merge revsisted
+- Identify how a merge results in a commit
 - Use git rebase to rewrite history onto a new branches tip.
 - Identify some advantages and disadvantages of workflows involving rebase versus merge.
 - identify needs to force push to remote repositories
 
-> Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge. Most of the Headers in this workshop's markdown are links to one of those two resources in the specified topic.
+> Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge on git. Most of the headers in this workshop's markdown are links to one of those two resources in the specified topic.
 
 > Headers that contain `"- You do"` will link to [a different repo]() that has an exercise associated with it.
 
-## Framing
+## Framing (5/10)
 
 Today we'll be diving deeper into some of the lesser used git commands. With a better understanding of some the more advanced git concepts, we can start to leverage really powerful tools at git's disposal.
 
@@ -48,7 +48,7 @@ We'll try to dispel some of the fear caused by git commands by understanding exa
 
 It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users.
 
-## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
+## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (5/15)
 When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
 #### "The Working Directory"
@@ -61,10 +61,10 @@ This tree is tracking Working Directory changes, that have been promoted with gi
 The final tree is the Commit History of HEAD.
 
 
-## HEAD
+## HEAD (5/20)
 It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When we hear something like the `HEAD` is on the tip of master, then we would be on the master branch.
 
-## Rehash commits and branches
+## [Rehash commits and branches](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)(5/25)
 Commits are changes to a repository. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
 
 Not only that, commits are aware of where they come from. IE. which commit(s) is/are my parent(s).
@@ -75,7 +75,7 @@ So when we say branches point to a commit, they quite literally hold a reference
 
 Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs and have histories of commits even when commits themselves are only aware of their direct parents.
 
-## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)
+## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)(5/30)
 As git users, we can inspect our changes in a variety of ways.
 
 `git show` ... shows us commit information and the git diff from the commit specified as the argument against it's direct parent(s)
@@ -98,7 +98,7 @@ The above command would point `HEAD` to that commit. Meaning our working directo
 
 This above command will also put us in a detached HEAD state. Meaning it is detached from any reference or branch. The `HEAD` still very much exists and is pointing to the commit we specified.
 
-## [Detached HEAD](https://git-scm.com/docs/git-checkout#_detached_head)
+## [Detached HEAD](https://git-scm.com/docs/git-checkout#_detached_head)(5/35)
 It means simply that HEAD refers to a specific commit, as opposed to referring to a named branch. We might have been in a detached HEAD state before, some git commands put the user into a detached HEAD.
 
 If we are to make any commits in a detached HEAD we lose them unless we make a reference to it. IE. a branch.
@@ -112,7 +112,7 @@ $ git checkout master
 $ git checkout -b some-branch-name
 ```
 
-## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git)
+## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git) (20/55)
 
 There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point which commit breaks the code. Enter `git bisect`.
 
@@ -166,7 +166,7 @@ Git repeats this until it identifies the first commit where the code went wrong.
 
 This is yet another reason why small purposeful semantic commits can be really helpful for code maintainability. If we're writing code that needs to compile, this is a great reason to make sure to only commit code that compiles.
 
-## Git Bisect - You do
+## Git Bisect - You do /w 5 min break (20/75)
 
 Clone down [this repo]() . Open the `index.html` in the browser.
 
@@ -185,7 +185,7 @@ Pinpoint the commit in which the red background bug first occurs.
 5. Find the first `bad` commit.
 6. Record this commit sha for the following exercises in this workshop
 
-## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection)
+## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection) (10/85)
 
 Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
 
@@ -226,7 +226,7 @@ HEAD~3^2
 
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
-## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
+## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (20/105)
 The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting.
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
@@ -267,13 +267,13 @@ $ git reset --hard B
 
 All three tree's in this case would "reset" to the state of commit `B`. This means we would lose all traces of commit `C` and `D` and essentially not be able to access them ever again! or not...?
 
-## Git Reset - You do
+## Git Reset - You do (5/110)
 
 Now that we've identified the bug in our application. Let's do a hard reset on our application to the commit previous to the bad commit specified in the `bisect` portion.
 
 Hint use `~` against the bad commit sha to find that commit.
 
-## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)
+## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)(15/125)
 With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
 
 The default expiration time for reflog entries is 90 days. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
@@ -370,7 +370,7 @@ $ git reset --soft master@{2}
 
 > these "pointers" can be used in other commands to. With something like `git diff`, we could examine the differences in our branch from the current state to a time interval we specify.
 
-## Git Reflog - You do
+## Git Reflog - You do (5/130)
 
 OH. NO. We lost some pretty crucial features when we did that last reset. We need to get that code back.
 
@@ -380,7 +380,7 @@ OH. NO. We lost some pretty crucial features when we did that last reset. We nee
 
 > At this point, you're browser should be red again.
 
-## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)
+## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)(10/140)
 
 Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
 
@@ -412,7 +412,7 @@ This would revert every commit inclusively between `67f68c` and `186ecd`.
 
 > We need to make sure that the commits passed in are of the same history and the first argument proceeds the second in the history.
 
-## Git revert - You do
+## Git revert - You do (5/145)
 
 You're back to square 1, everything is red still. Fortunately you still have the commit sha that introduces the bug. You do still have that, right?
 
@@ -420,7 +420,7 @@ You're back to square 1, everything is red still. Fortunately you still have the
 1. On the branch you created earlier(post reflog), revert the bad commit from the bisection in the first exercise.
 2. Inspect the `index.html` in the browser.
 
-## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) (5/150)
 When working with teams on a project, there will often be times where we need to pull changes from a remote repository. We have two main ways to integrate changes from the upstream. One most of us are familiar with is `git merge` the other not as well known method is `git rebase`.
 
 We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
@@ -429,7 +429,7 @@ We can use `git merge` in order to combine two branches. The branch that we curr
 
 When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create commit when we start to talk about merging versus rebasing.
 
-## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (10/160)
 Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
 
 [`git rebase`](https://git-scm.com/docs/git-rebase) finds the common ancestor between the branch that we want to rebase and the branch we're rebasing on to. It then "removes" the commits of the rebasing branch until that common ancestor. Then it moves the branch's(the one that's rebasing) tip to the tip of the branch we are rebasing on to. Then it reapplies the same commits that were removed on that new tip.
@@ -457,7 +457,7 @@ $ git rebase master
 
 If it goes smoothly, we won't even have to do anything. All our changes will be intact on the new base and we can continue to work. If it doesn't go smoothly ...
 
-#### Merge conflicts
+#### Merge conflicts (5/165)
 Just like with merges, git doesn't know what to do if the two branches edit the same file. It will create a merge conflict in a rebase as well.
 
 We'll fix the conflict like we normally would in a merge.
@@ -502,7 +502,7 @@ If we find ourselves asking if we should be rebasing or merging, the answer lies
 
 In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already.
 
-## Force Push
+## Force Push(5/170)
 This is a scary one for sure.
 
 First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
@@ -511,16 +511,121 @@ There are some situations where we will want to force push. More often than not,
 
 In a force push, we are quite literally telling the remote branch to stop pointing at its current commit and instead point to the same commit that our local HEAD is pointing to.
 
+In order to force push, we need to be on the branch reference we'd like to push then run:
+
+```
+$ git checkout <branch you want to push>
+$ git push -f <remote> <branch>
+```
+
 This can have pretty disastrous effect if someone else is working off of that branch as they potentially couldn't reconcile changes against it anymore.
 
 In short, be very cognizant when leveraging a force push. And if we're unsure, it's better to ask someone.
+
+## Communication (5/175)
+
+One of the most important tools using git in teams is not anyone command or git interface. It is communication. There aren't any tools or commands that can reduce the amount of merge conflicts. The only thing that can help on that end is good team communication.
+
+If we can have conversations with our team members about which features are being implemented or refactored, we can reduce the amount and complexity of merge conflicts.
+
+If git isn't a priority consideration on our team when establishing who is working on what, then we should find a way to make it a priority. Simply by communicating and avoiding parallel complex implementations we can significantly reduce the amount of overhead and technical debt caused by issues with git.
+
+## Closing (5/180)
+Don't be afraid of git anything we do can quite literally be undone(within 90 days). Harness its power and become a good git practitioner to see the benefits of leveraging a tool in the correct way.
 
 
 # Bonus helpful commands that don't really fit into the flow of the lesson plan!
 ## [git stash](https://git-scm.com/book/en/v1/Git-Tools-Stashing)
 
-## git commit --ammend
+There are times when we have dirty working directory and then have to do something in git in which we'd rather not have to deal with modified changes. One solution is to commit your work. However, what if the changes you made don't warrant a commit and you want to continue to work on this feature and commit these changes later?
 
-## the `-p` flag
+Enter git stash. Stashing will store the changes in a "stash" on the git repository. Specifically in `./.git/refs/stash`.
 
-## Communication
+In order to stash something, we simply run the following against our dirty directory:
+
+```
+$ git stash
+```
+
+In order to see all of our various stashes we can run this command:
+
+```
+$ git stash list
+```
+
+The output of this might look something like this:
+
+```
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+```
+
+The previous output would happen if we had stashed 3 separate times. In order to "re dirty" our working directory we run:
+
+```
+# will apply the most recently stashed changes
+$ git stash apply
+
+# or if you want to specify a different stash on the list pass in a git revision
+# if using the above snippets stash list then changing to 'c264051 Revert "added file_size"' would be:
+$ git stash apply stash@{1}
+```
+
+## [git commit --ammend](https://www.atlassian.com/git/tutorials/rewriting-history)
+There are times we make a commit a bit prematurely. Maybe we forgot to remove our `console.log()`'s from our feature branch or we don't feel great about the wording of the last commit message.
+
+We can use `git commit --amend` to make these changes. It lets us combine staged changes with the previous commit instead of creating an entirely new commit.
+
+To ammend a commit message:
+
+```
+$ git commit --amend -m "updated commit message"
+```
+
+Running this command when there is nothing staged lets you edit the previous commit’s message without altering its snapshot. If we do want to add some changes. Simply add them to the index(staging area) and run one of the following
+
+```
+$ git add someFileToBeCommitted.txt
+
+# if we don't want to edit the original commit message
+$ git commit --amend --no-edit
+
+# if we do want to edit the commit message
+$ git commit --amend -m "updated commit message"
+```
+
+**DO NOT** ammend public commits for the same reasons you do not rebase public commits. Ammending creates a brand new commit.
+
+> Also we can also do `$ git reset --soft HEAD^` to do the same things.
+
+## [the `-p` flag or ("patch-mode")](https://stackoverflow.com/questions/10605405/what-does-each-of-the-y-n-q-a-d-k-j-j-g-e-stand-for-in-context-of-git-p)
+For many commands in git we can run them in "patch mode". Patch mode will also us to view chunks of changes and allow us to decide what do with them. Some commands that can be run in patch mode are but not limited to: `add`, `checkout`, `reset`, `stash`.
+
+To stage things in patch mode we might run something like this:
+
+```
+$ git add someFileName -p
+```
+
+It will show us a diff of some chunk of code ready to be staged and prompt us with what we want to do with it.
+
+```
+y - stage this hunk
+n - do not stage this hunk
+q - quit; do not stage this hunk nor any of the remaining ones
+a - stage this hunk and all later hunks in the file
+d - do not stage this hunk nor any of the later hunks in the file
+g - select a hunk to go to
+/ - search for a hunk matching the given regex
+j - leave this hunk undecided, see next undecided hunk
+J - leave this hunk undecided, see next hunk
+k - leave this hunk undecided, see previous undecided hunk
+K - leave this hunk undecided, see previous hunk
+s - split the current hunk into smaller hunks
+e - manually edit the current hunk
+? - print help
+```
+
+The first 5 are the most helpful. When we enter a command it will then go to the next chunk.
