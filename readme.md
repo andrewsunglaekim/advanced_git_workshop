@@ -36,7 +36,9 @@ diff
 - Identify some advantages and disadvantages of workflows involving rebase versus merge.
 - identify needs to force push to remote repositories
 
-> Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge. Most of the Headers in this workshop markdown are links to one of those two resources in the specified topic.
+> Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge. Most of the Headers in this workshop's markdown are links to one of those two resources in the specified topic.
+
+> Headers that contain `"- You do"` will link to [a different repo]() that has an exercise associated with it.
 
 ## Framing
 
@@ -242,7 +244,9 @@ This will set `HEAD` and current branch reference to `B`. Whether we pass in `--
 
 When using the `--soft` flag. The diff between `B` and `D` will be staged for commit to reflect a commit that would encompass the changes from `B` to `D`. In other words the "second tree" (the index) has those differences. The `--soft` really just "resets" the commit history(3rd tree).
 
-We might want to do a soft reset when we like the commits we've made, but we want to tack on a bit more to it, kind of like an amend to a commit. It would be another way to "squash" commits as well(more on that later)
+We might want to do a soft reset when we like the commits we've made, but we want to tack on a bit more to it, kind of like an amend to a commit. Also, we just learned how to squash in git!
+
+> Can also squash with interactive rebasing and squash merging
 
 #### resetting the `--mixed` way(this is the default)
 This is the default mode of reset.
@@ -374,6 +378,8 @@ OH. NO. We lost some pretty crucial features when we did that last reset. We nee
 1. Use `git reflog` to find the gitrevision(eg. `HEAD@{2}` or `master@{1}`) or commit sha that you need to get back to prior to the reset done earlier in the workshop.  
 2. Once on that commit, checkout to a new branch(call it whatever you'd like)
 
+> At this point, you're browser should be red again.
+
 ## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)
 
 Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
@@ -423,7 +429,7 @@ We can use `git merge` in order to combine two branches. The branch that we curr
 
 When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create commit when we start to talk about merging versus rebasing.
 
-## Rebasing
+## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
 
 [`git rebase`](https://git-scm.com/docs/git-rebase) finds the common ancestor between the branch that we want to rebase and the branch we're rebasing on to. It then "removes" the commits of the rebasing branch until that common ancestor. Then it moves the branch's(the one that's rebasing) tip to the tip of the branch we are rebasing on to. Then it reapplies the same commits that were removed on that new tip.
@@ -478,7 +484,7 @@ Throughout this whole process, we have never made a commit documenting that we w
 
 As nice as rebasing is, there are some serious dangers to it. Remember, we are rewriting history. Any time we rewrite history, we should be cautious.
 
-Imagine a scenario where we are working on a feature branch and someone else is assigned to that feature as well. We both have branched off from the feature branch and working on things to make this feature work. Then a third person unknowingly comes along and rebases the feature branch onto master to integrate some changes from a different feature. Now we have no way of reconciling our changes against the new history and git gets really confused.
+Imagine a scenario where we are working on a feature branch and someone else is assigned to that feature as well. We both have branched off from the feature branch and working on things to make this feature work. Then a third person unknowingly comes along and rebases the feature branch onto master to integrate some changes from a different feature then force pushes that rebase to the remote. Now we have no way of reconciling our changes against the new history and git gets really confused.
 
 The golden rule of rebasing is:
 
@@ -510,9 +516,11 @@ This can have pretty disastrous effect if someone else is working off of that br
 In short, be very cognizant when leveraging a force push. And if we're unsure, it's better to ask someone.
 
 
-# Bonus commands!
+# Bonus helpful commands that don't really fit into the flow of the lesson plan!
 ## [git stash](https://git-scm.com/book/en/v1/Git-Tools-Stashing)
 
 ## git commit --ammend
 
 ## the `-p` flag
+
+## Communication
