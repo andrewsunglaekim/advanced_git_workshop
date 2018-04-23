@@ -2,7 +2,7 @@
 
 ## Requisites
 
-This workshop is primarily designed for those that have a decent foundation in git. You don't need to be an expert with git. You should be familiar with and have used the following git commands(in no particular order):
+This workshop is primarily designed for those that have a decent foundation in git. We don't need to be an expert with git. We should be familiar with and have used the following git commands(in no particular order):
 
 ```
 init
@@ -38,7 +38,7 @@ diff
 
 > Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge on git. Most of the headers in this workshop's markdown are links to one of those two resources in the specified topic.
 
-> Headers that contain `"- You do"` will link to [a different repo]() that has an exercise associated with it.
+> Headers that contain `"- You do"` will link to [a different repo](https://github.com/andrewsunglaekim/advanced_git_workshop_ex) that has an exercise associated with it.
 
 ## Framing (5/10)
 
@@ -103,7 +103,7 @@ It means simply that HEAD refers to a specific commit, as opposed to referring t
 
 If we are to make any commits in a detached HEAD we lose them unless we make a reference to it. IE. a branch.
 
-You can leave a detached HEAD state simply by checking into a branch, something like this:
+We can leave a detached HEAD state simply by checking into a branch, something like this:
 
 ```
 $ git checkout master
@@ -231,7 +231,7 @@ The following command could have disastrous effects on our `HEAD`'s history, the
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
 
-> In the following snippets instead of sha's, we will use letters to represent our commit history. `A` being the first commit in the history and `D` being the last commit in the history. HEAD is currently on commit `D`.
+> In the following snippets instead of sha's, we will use letters to represent our commit history. `A` being the first commit in the history and `D` being the last commit in the history. There are four commits in this order: `A`, `B`, `C`, `D`. HEAD is currently on commit `D`.
 
 #### resetting the `--soft` way.
 In all resets, the commit history(3rd tree) is always changed to reflect the commit passed in.
@@ -343,7 +343,7 @@ The above command will output a reference log for master that starts with any ch
 
 We can pass in steps as well like `HEAD@{2}`. And this would be the reference log for all changes prior to 2 changes from the current state of `HEAD`.
 
-> One thing about the `reflog` to note is that reference logs are local. That is to say your reference log and your teammates reference log of the same project will be disparate.
+> One thing about the `reflog` to note is that reference logs are local. That is to say our reference log and our teammates reference log of the same project will be disparate.
 
 #### Leveraging pointers or commit sha's to rewrite history.
 The reflog gives us everything we would want in terms of rewriting history to historical references. We can use either the sha or pointer of a `reflog` entry.
@@ -399,7 +399,7 @@ $ git revert --continue
 
 If there wasn't a merge conflict, it will open our text editor for the commit message for the revert.
 
-You can actually revert a series of commits; however, each of these commits will have its own commit to revert.
+We can actually revert a series of commits; however, each of these commits will have its own commit to revert.
 
 ```
 $ git revert <beginning-git-sha>..<final-git-sha>
@@ -425,9 +425,9 @@ When working with teams on a project, there will often be times where we need to
 
 We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
 
-> With regard to the `^` symbol, `^1` would be the branch you are on, and `^2` would be the branch that is being merged in.
+> With regard to the `^` symbol, `^1` would be the branch we are on, and `^2` would be the branch that is being merged in.
 
-When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create commit when we start to talk about merging versus rebasing.
+When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create a commit when we start to talk about merging versus rebasing.
 
 ## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (10/160)
 Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
@@ -439,7 +439,7 @@ Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is
 To rebase, simply run:
 
 ```
-$ git rebase <branch-rebasing-onto> <branch-rebasing>
+$ git rebase <branch-rebasing-onto> <branch-being-rebased>
 
 # OR if you are on the branch that you want to rebase on a new tip
 $ git rebase <branch-rebasing-onto>
@@ -458,7 +458,7 @@ $ git rebase master
 If it goes smoothly, we won't even have to do anything. All our changes will be intact on the new base and we can continue to work. If it doesn't go smoothly ...
 
 #### Merge conflicts (5/165)
-Just like with merges, git doesn't know what to do if the two branches edit the same file. It will create a merge conflict in a rebase as well.
+Just like with merges, git's rebase doesn't know what to do if the two branches edit the same file. It will create a merge conflict in a rebase as well.
 
 We'll fix the conflict like we normally would in a merge.
 
@@ -500,7 +500,7 @@ Another perspective is that we want to catalog code changes not meta data about 
 
 If we find ourselves asking if we should be rebasing or merging, the answer lies in understanding how rebasing and merging effect git history and then determining a course of action.
 
-In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already.
+In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already. Then merge in rebased feature branches into our master branch or whichever branch is our "clean" one.
 
 ## Force Push(5/170)
 This is a scary one for sure.
@@ -524,11 +524,11 @@ In short, be very cognizant when leveraging a force push. And if we're unsure, i
 
 ## Communication (5/175)
 
-One of the most important tools using git in teams is not anyone command or git interface. It is communication. There aren't any tools or commands that can reduce the amount of merge conflicts. The only thing that can help on that end is good team communication.
+One of the most important tools in git team workflows is not any one command or git interface. It is communication. There aren't any tools or commands that can reduce the amount of merge conflicts. The only thing that can help on that end is good team communication.
 
 If we can have conversations with our team members about which features are being implemented or refactored, we can reduce the amount and complexity of merge conflicts.
 
-If git isn't a priority consideration on our team when establishing who is working on what, then we should find a way to make it a priority. Simply by communicating and avoiding parallel complex implementations we can significantly reduce the amount of overhead and technical debt caused by issues with git.
+If git isn't a priority consideration on our team when establishing who is working on what, then we should find a way to make it a priority. Whether using a merging or rebasing strategy communication is paramount in reducing problems that could be introduced with git(merge conflicts). Simply by communicating and avoiding parallel complex implementations of features that touch the same files, we can significantly reduce the amount of overhead and technical debt caused by issues with git.
 
 ## Closing (5/180)
 Don't be afraid of git anything we do can quite literally be undone(within 90 days). Harness its power and become a good git practitioner to see the benefits of leveraging a tool in the correct way.
