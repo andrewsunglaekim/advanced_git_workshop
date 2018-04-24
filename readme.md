@@ -94,7 +94,7 @@ To have HEAD point to a commit we would instead use `checkout`:
 $ git checkout 148d58e
 ```
 
-> Depending on the arguments and flags passed to checkout, checkout can also be used against files in our working directory as well. `git checkout -- fileName` or `git checkout fileName` use the prior incase we had a branch called `fileName`
+> Depending on the arguments and flags passed to checkout, checkout can also be used against files in our working directory as well. `git checkout -- fileName` or `git checkout fileName` use the prior incase we had a branch called `fileName`. Checkout, in this case, would "reset" that file to whatever the `HEAD`'s version of that file is
 
 The above command would point `HEAD` to that commit. Meaning our working directory would reflect the folders and files of the commit passed in.
 
@@ -116,7 +116,7 @@ $ git checkout -b some-branch-name
 
 ## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git) (20/55)
 
-There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point which commit breaks the code. Enter `git bisect`.
+There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point the exact commit that breaks the code. Enter `git bisect`.
 
 Through git logs we can see that commit histories are linear and "sorted" in terms of sequence of changes.
 
