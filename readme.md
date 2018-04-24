@@ -21,20 +21,22 @@ diff
 
 ## Learning Objectives (5/5)
 
-- Describe the three trees of git
-- Identify what the HEAD in git is.
-- Identify the unidirectional relationship of commits
-- Use `git checkout` to inspect commits or change the file tree.
-- Define detached HEAD state
-- Use bisection (`git bisect`) to identify potentially bad commits.
-- Identify how realtive refs (`~` and `^` characters) are used to point at commits.
-- Reset git history using reset
-- Access reference logs to undo the terrible things.
-- Use `git revert` to "revert" a commit
-- Identify how a merge results in a commit
-- Use git rebase to rewrite history onto a new branches tip.
-- Identify some advantages and disadvantages of workflows involving rebase versus merge.
-- identify needs to force push to remote repositories
+- [Describe the three trees of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-515)
+- [Identify what the HEAD in git is](https://github.com/andrewsunglaekim/advanced_git_workshop#head-520)
+- [Identify the unidirectional relationship of commits](https://github.com/andrewsunglaekim/advanced_git_workshop#rehash-commits-and-branches525)
+- [Use `git show` and `git checkout` to inspect commits or change the file tree](https://github.com/andrewsunglaekim/advanced_git_workshop#rehash-commits-and-branches525)
+- [Define detached HEAD state](https://github.com/andrewsunglaekim/advanced_git_workshop#detached-head535)
+- [Use bisection (`git bisect`) to identify potentially bad commits](https://github.com/andrewsunglaekim/advanced_git_workshop#bisection-2055)
+- [Identify how realtive refs (`~` and `^` characters) are used to point at commits](https://github.com/andrewsunglaekim/advanced_git_workshop#targeting-commits-with-git-revisions-1085)
+- [Reset git history using reset](https://github.com/andrewsunglaekim/advanced_git_workshop#git-reset-20105)
+- [Access reference logs to undo the terrible things](https://github.com/andrewsunglaekim/advanced_git_workshop#git-reflog15125)
+- [Use `git revert` to "revert" a commit](https://github.com/andrewsunglaekim/advanced_git_workshop#git-revert10140)
+- [Identify how a merge results in a commit](https://github.com/andrewsunglaekim/advanced_git_workshop#git-merge-5150)
+- [Use git rebase to rewrite history onto a new branches tip](https://github.com/andrewsunglaekim/advanced_git_workshop#rebasing-10160)
+- [Identify some advantages and disadvantages of workflows involving rebase versus merge](https://github.com/andrewsunglaekim/advanced_git_workshop#merge-vs-rebase)
+- [Identify needs to force push to remote repositories](https://github.com/andrewsunglaekim/advanced_git_workshop#force-push5170)
+- [Identify the need to prioritize git workflows on teams](https://github.com/andrewsunglaekim/advanced_git_workshop#communication-5175)
+- [Bonus!: Other useful commands](https://github.com/andrewsunglaekim/advanced_git_workshop#bonus-helpful-commands-that-dont-really-fit-into-the-flow-of-the-lesson-plan)
 
 > Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge on git. Most of the headers in this workshop's markdown are links to one of those two resources in the specified topic.
 
@@ -170,9 +172,9 @@ This is yet another reason why small purposeful semantic commits can be really h
 
 Clone down [this repo]() . Open the `index.html` in the browser.
 
-Oh no, all we can see is red. We knew at one time this feature had some pretty pertinent text, but now all we can see is red.
+Oh no, all we can see is red. We haven't worked on this code base in forever.  We knew at one time this feature had some pretty pertinent text, but now all we can see is red.
 
-You take a look at the commit history of this repo and you are appalled. There's over a hundred commit and they all have the same commit message.
+You take a look at the commit history of this repo and you are appalled. There's over a hundred commits and they all have the same commit message.
 
 #### Objective:
 Pinpoint the commit in which the red background bug first occurs.
@@ -573,12 +575,12 @@ $ git stash apply
 $ git stash apply stash@{1}
 ```
 
-## [git commit --ammend](https://www.atlassian.com/git/tutorials/rewriting-history)
+## [git commit --amend](https://www.atlassian.com/git/tutorials/rewriting-history)
 There are times we make a commit a bit prematurely. Maybe we forgot to remove our `console.log()`'s from our feature branch or we don't feel great about the wording of the last commit message.
 
 We can use `git commit --amend` to make these changes. It lets us combine staged changes with the previous commit instead of creating an entirely new commit.
 
-To ammend a commit message:
+To amend a commit message:
 
 ```
 $ git commit --amend -m "updated commit message"
@@ -596,7 +598,7 @@ $ git commit --amend --no-edit
 $ git commit --amend -m "updated commit message"
 ```
 
-**DO NOT** ammend public commits for the same reasons you do not rebase public commits. Ammending creates a brand new commit.
+**DO NOT** amend public commits for the same reasons we do not rebase public commits. Amending creates a brand new commit.
 
 > Also we can also do `$ git reset --soft HEAD^` to do the same things.
 
@@ -628,4 +630,4 @@ e - manually edit the current hunk
 ? - print help
 ```
 
-The first 5 are the most helpful. When we enter a command it will then go to the next chunk.
+The first 5 are the most helpful. When we enter a command it will then go to the next chunk until the process is finished.
