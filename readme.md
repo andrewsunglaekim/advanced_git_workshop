@@ -170,7 +170,7 @@ This is yet another reason why small purposeful semantic commits can be really h
 
 ## Git Bisect - You do /w 5 min break (20/75)
 
-Clone down [this repo]() . Open the `index.html` in the browser.
+Clone down [this repo](https://github.com/andrewsunglaekim/advanced_git_workshop_ex) . Then run `$ git remove remote origin`. Open the `index.html` in the browser.
 
 Oh no, all we can see is red. We haven't worked on this code base in forever.  We knew at one time this feature had some pretty pertinent text, but now all we can see is red.
 
@@ -218,6 +218,8 @@ Merging results in a merge commit, therefore that commit will have 2 parents. On
 HEAD^ # this would point to the HEAD commit's first parent. The commit we were on before the merge.
 HEAD^1 # this would point to the HEAD commit's first parent. The commit we were on before the merge.
 HEAD^2 # this would point to the HEAD commit's second parent. The commit we merged in.
+master^1 # The 1st parent commit of the tip of the master branch
+ce70821^2 # The 2nd parent (note: not grandparent) commit of the commit sha ce70821
 ```
 
 We can also chain these operators, something like this:
@@ -229,7 +231,7 @@ HEAD~3^2
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
 ## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (20/105)
-The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting.
+The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting. In most cases, it rewrites history, when it's not it's resetting your working directory. Either way we stand to lose some change we've made. Definitely do not reset a branch's history that has been shared.
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
 
@@ -244,7 +246,7 @@ $ git reset --soft B
 
 This will set `HEAD` and current branch reference to `B`. Whether we pass in `--soft`, `--mixed`, or `--hard`, it will always change the commit history in this way.
 
-When using the `--soft` flag. The diff between `B` and `D` will be staged for commit to reflect a commit that would encompass the changes from `B` to `D`. In other words the "second tree" (the index) has those differences. The `--soft` really just "resets" the commit history(3rd tree).
+When using the `--soft` flag. The diff between `B` and `D` will be staged for commit to reflect a commit that would encompass the changes from `B` to `D`. In other words the "first tree"(working directory) and "second tree"(the index) has those differences. The `--soft` really just "resets" the commit history(3rd tree).
 
 We might want to do a soft reset when we like the commits we've made, but we want to tack on a bit more to it, kind of like an amend to a commit. Also, we just learned how to squash in git!
 
