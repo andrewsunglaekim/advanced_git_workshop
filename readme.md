@@ -233,7 +233,7 @@ HEAD~3^2
 ## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (20/105)
 The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting. In most cases, it rewrites history, when it's not it's resetting your working directory. Either way we stand to lose some change we've made. Definitely do not reset a branch's history that has been shared.
 
-`git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the three tree of git.
+`git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the [three tree of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-515).
 
 > In the following snippets instead of sha's, we will use letters to represent our commit history. `A` being the first commit in the history and `D` being the last commit in the history. There are four commits in this order: `A`, `B`, `C`, `D`. HEAD is currently on commit `D`.
 
