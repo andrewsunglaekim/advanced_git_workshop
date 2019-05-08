@@ -19,7 +19,7 @@ status
 diff
 ```
 
-## Learning Objectives (5/5)
+## Learning Objectives (3/3)
 
 - [Describe the three trees of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-515)
 - [Identify what the HEAD in git is](https://github.com/andrewsunglaekim/advanced_git_workshop#head-520)
@@ -42,15 +42,15 @@ diff
 
 > Headers that contain `"- You do"` will link to [a different repo](https://github.com/andrewsunglaekim/advanced_git_workshop_ex) that has an exercise associated with it.
 
-## Framing (5/10)
+## Framing (2/5)
 
 Today we'll be diving deeper into some of the lesser used git commands. With a better understanding of some the more advanced git concepts, we can start to leverage really powerful tools at git's disposal.
 
 We'll try to dispel some of the fear caused by git commands by understanding exactly what happens during those commands.
 
-It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users.
+It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users. As well as establish a foundation of knowledge for the taxonomy we use in git.
 
-## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (5/15)
+## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (3/8)
 When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
 #### "The Working Directory"
@@ -60,13 +60,13 @@ This tree is in sync with the local filesystem and is representative of the imme
 This tree is tracking Working Directory changes, that have been promoted with git add, to be stored in the next commit.
 
 #### The Commit History
-The final tree is the Commit History of HEAD.
+The final tree is the Commit History of HEAD. More specifically, it is the final snapshot that HEAD is pointing to and the parent of the next commit.
 
 
-## HEAD (5/20)
+## HEAD (2/10)
 It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When we hear something like the `HEAD` is on the tip of master, then we would be on the master branch.
 
-## [Rehash commits and branches](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)(5/25)
+## [Rehash commits and branches](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)(5/15)
 Commits are changes to a repository. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
 
 Not only that, commits are aware of where they come from. IE. which commit(s) is/are my parent(s).
@@ -77,7 +77,7 @@ So when we say branches point to a commit, they quite literally hold a reference
 
 Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs and have histories of commits even when commits themselves are only aware of their direct parents.
 
-## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)(5/30)
+## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)(3/18)
 As git users, we can inspect our changes in a variety of ways.
 
 `git show` ... shows us commit information and the git diff from the commit specified as the argument against it's direct parent(s)
@@ -100,7 +100,7 @@ The above command would point `HEAD` to that commit. Meaning our working directo
 
 This above command will also put us in a detached HEAD state. Meaning it is detached from any reference or branch. The `HEAD` still very much exists and is pointing to the commit we specified.
 
-## [Detached HEAD](https://git-scm.com/docs/git-checkout#_detached_head)(5/35)
+## [Detached HEAD](https://git-scm.com/docs/git-checkout#_detached_head)(3/21)
 It means simply that HEAD refers to a specific commit, as opposed to referring to a named branch. We might have been in a detached HEAD state before, some git commands put the user into a detached HEAD.
 
 If we are to make any commits in a detached HEAD we lose them unless we make a reference to it. IE. a branch.
@@ -114,7 +114,7 @@ $ git checkout master
 $ git checkout -b some-branch-name
 ```
 
-## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git) (20/55)
+## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git) (15/36)
 
 There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point the exact commit that breaks the code. Enter `git bisect`.
 
@@ -168,7 +168,7 @@ Git repeats this until it identifies the first commit where the code went wrong.
 
 This is yet another reason why small purposeful semantic commits can be really helpful for code maintainability. If we're writing code that needs to compile, this is a great reason to make sure to only commit code that compiles.
 
-## Git Bisect - You do /w 5 min break (20/75)
+## [Git Bisect - You do](https://github.com/andrewsunglaekim/advanced_git_workshop_ex#exercise-1) (14/50)
 
 Clone down [this repo](https://github.com/andrewsunglaekim/advanced_git_workshop_ex) . Then run `$ git remove remote origin`. Open the `index.html` in the browser.
 
@@ -187,7 +187,7 @@ Pinpoint the commit in which the red background bug first occurs.
 5. Find the first `bad` commit.
 6. Record this commit sha for the following exercises in this workshop
 
-## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection) (10/85)
+## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection) (5/55)
 
 Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
 
@@ -230,7 +230,7 @@ HEAD~3^2
 
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
-## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (20/105)
+## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (15/70)
 The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting. In most cases, it rewrites history, when it's not it's resetting your working directory. Either way we stand to lose some change we've made. Definitely do not reset a branch's history that has been shared.
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the [three trees of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-515).
@@ -271,13 +271,13 @@ $ git reset --hard B
 
 All three tree's in this case would "reset" to the state of commit `B`. This means we would lose all traces of commit `C` and `D` and essentially not be able to access them ever again! or not...?
 
-## Git Reset - You do (5/110)
+## [Git Reset - You do](https://github.com/andrewsunglaekim/advanced_git_workshop_ex#exercise-2) (5/75)
 
 Now that we've identified the bug in our application. Let's do a hard reset on our application to the commit previous to the bad commit specified in the `bisect` portion.
 
 Hint use `~` against the bad commit sha to find that commit.
 
-## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)(15/125)
+## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)(10/85)
 With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
 
 The default expiration time for reflog entries is 90 days. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
@@ -374,7 +374,7 @@ $ git reset --soft master@{2}
 
 > these "pointers" can be used in other commands to. With something like `git diff`, we could examine the differences in our branch from the current state to a time interval we specify.
 
-## Git Reflog - You do (5/130)
+## [Git Reflog - You do](https://github.com/andrewsunglaekim/advanced_git_workshop_ex#exercise-3) (5/90)
 
 OH. NO. We lost some pretty crucial features when we did that last reset. We need to get that code back.
 
@@ -384,7 +384,7 @@ OH. NO. We lost some pretty crucial features when we did that last reset. We nee
 
 > At this point, you're browser should be red again.
 
-## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)(10/140)
+## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)(5/95)
 
 Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
 
@@ -416,7 +416,7 @@ This would revert every commit inclusively between `67f68c` and `186ecd`.
 
 > We need to make sure that the commits passed in are of the same history and the first argument proceeds the second in the history.
 
-## Git revert - You do (5/145)
+## Git revert - You do (5/100)
 
 You're back to square 1, everything is red still. Fortunately you still have the commit sha that introduces the bug. You do still have that, right?
 
@@ -424,7 +424,7 @@ You're back to square 1, everything is red still. Fortunately you still have the
 1. On the branch you created earlier(post reflog), revert the bad commit from the bisection in the first exercise.
 2. Inspect the `index.html` in the browser.
 
-## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) (5/150)
+## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) (5/105)
 When working with teams on a project, there will often be times where we need to pull changes from a remote repository. We have two main ways to integrate changes from the upstream. One most of us are familiar with is `git merge` the other not as well known method is `git rebase`.
 
 We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
@@ -433,7 +433,7 @@ We can use `git merge` in order to combine two branches. The branch that we curr
 
 When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create a commit when we start to talk about merging versus rebasing.
 
-## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (10/160)
+## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (5/110)
 Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
 
 [`git rebase`](https://git-scm.com/docs/git-rebase) finds the common ancestor between the branch that we want to rebase and the branch we're rebasing on to. It then "removes" the commits of the rebasing branch until that common ancestor. Then it moves the branch's(the one that's rebasing) tip to the tip of the branch we are rebasing on to. Then it reapplies the same commits that were removed on that new tip.
@@ -461,7 +461,7 @@ $ git rebase master
 
 If it goes smoothly, we won't even have to do anything. All our changes will be intact on the new base and we can continue to work. If it doesn't go smoothly ...
 
-#### Merge conflicts (5/165)
+#### Merge conflicts (5/115)
 Just like with merges, git's rebase doesn't know what to do if the two branches edit the same file. It will create a merge conflict in a rebase as well.
 
 We'll fix the conflict like we normally would in a merge.
@@ -498,7 +498,7 @@ If we violate this rule, it's only because no one else is using our pushed code 
 
 ## Merge vs Rebase
 
-So, which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream (merging) version control should know about this merge happening and document it always.
+So, which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream(pulling), version control should know about this merge happening and document it always.
 
 Another perspective is that we want to catalog code changes not meta data about how we are versioning.
 
@@ -506,14 +506,14 @@ If we find ourselves asking if we should be rebasing or merging, the answer lies
 
 In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already. Then merge in rebased feature branches into our master branch or whichever branch is our "clean" one.
 
-## Force Push(5/170)
+## Force Push(5/120)
 This is a scary one for sure.
 
 First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
 
 There are some situations where we will want to force push. More often than not, it's because we've already pushed a remote branch but we're rebasing our branch locally to integrate some changes from the upstream and we want to push that rebased branch to the remote. If we've already pushed the non rebased version, we need to force push the rebased version.
 
-In a force push, we are quite literally telling the remote branch to stop pointing at its current commit and instead point to the same commit that our local HEAD is pointing to.
+In a force push, we are telling the remote branch to stop pointing at its current commit and instead point to the same commit that our local HEAD is pointing to.
 
 In order to force push, we need to be on the branch reference we'd like to push then run:
 
@@ -526,16 +526,16 @@ This can have pretty disastrous effect if someone else is working off of that br
 
 In short, be very cognizant when leveraging a force push. And if we're unsure, it's better to ask someone.
 
-## Communication (5/175)
+## Communication (5/125)
 
 One of the most important tools in git team workflows is not any one command or git interface. It is communication. There aren't any tools or commands that can reduce the amount of merge conflicts. The only thing that can help on that end is good team communication.
 
 If we can have conversations with our team members about which features are being implemented or refactored, we can reduce the amount and complexity of merge conflicts.
 
-If git isn't a priority consideration on our team when establishing who is working on what, then we should find a way to make it a priority. Whether using a merging or rebasing strategy communication is paramount in reducing problems that could be introduced with git(merge conflicts). Simply by communicating and avoiding parallel complex implementations of features that touch the same files, we can significantly reduce the amount of overhead and technical debt caused by issues with git.
+If git isn't a consideration on our team when establishing who is working on what, then we should find a way to make it a priority. Whether using a merging or rebasing strategy, communication is paramount in reducing problems that could be introduced with git(merge conflicts). Simply by communicating and avoiding parallel complex implementations of features that touch the same files, we can significantly reduce the amount of overhead and technical debt caused by issues with git.
 
-## Closing (5/180)
-Don't be afraid of git anything we do can quite literally be undone(within 90 days). Harness its power and become a good git practitioner to see the benefits of leveraging a tool in the correct way.
+## Closing (2/127)
+Don't be afraid of git. Anything we do can quite literally be undone(within 90 days). Harness its power and become a good git practitioner to see the benefits of leveraging a tool in more ways then just glorified saving.
 
 
 # Bonus helpful commands that don't really fit into the flow of the lesson plan!
