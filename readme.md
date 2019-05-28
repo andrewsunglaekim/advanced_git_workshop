@@ -21,21 +21,21 @@ diff
 
 ## Learning Objectives (3/3)
 
-- [Describe the three trees of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-515)
-- [Identify what the HEAD in git is](https://github.com/andrewsunglaekim/advanced_git_workshop#head-520)
-- [Identify the unidirectional relationship of commits](https://github.com/andrewsunglaekim/advanced_git_workshop#rehash-commits-and-branches525)
-- [Use `git show` and `git checkout` to inspect commits or change the file tree](https://github.com/andrewsunglaekim/advanced_git_workshop#rehash-commits-and-branches525)
-- [Define detached HEAD state](https://github.com/andrewsunglaekim/advanced_git_workshop#detached-head535)
-- [Use bisection (`git bisect`) to identify potentially bad commits](https://github.com/andrewsunglaekim/advanced_git_workshop#bisection-2055)
-- [Identify how realtive refs (`~` and `^` characters) are used to point at commits](https://github.com/andrewsunglaekim/advanced_git_workshop#targeting-commits-with-git-revisions-1085)
-- [Reset git history using reset](https://github.com/andrewsunglaekim/advanced_git_workshop#git-reset-20105)
-- [Access reference logs to undo the terrible things](https://github.com/andrewsunglaekim/advanced_git_workshop#git-reflog15125)
-- [Use `git revert` to "revert" a commit](https://github.com/andrewsunglaekim/advanced_git_workshop#git-revert10140)
-- [Identify how a merge results in a commit](https://github.com/andrewsunglaekim/advanced_git_workshop#git-merge-5150)
-- [Use git rebase to rewrite history onto a new branches tip](https://github.com/andrewsunglaekim/advanced_git_workshop#rebasing-10160)
+- [Describe the three trees of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-38)
+- [Identify what the HEAD in git is](https://github.com/andrewsunglaekim/advanced_git_workshop#head-210)
+- [Identify the unidirectional relationship of commits](https://github.com/andrewsunglaekim/advanced_git_workshop#rehash-commits-and-branches515)
+- [Use `git show` and `git checkout` to inspect commits or change the file tree](https://github.com/andrewsunglaekim/advanced_git_workshop#rehash-commits-and-branches315)
+- [Define detached HEAD state](https://github.com/andrewsunglaekim/advanced_git_workshop#detached-head321)
+- [Use bisection (`git bisect`) to identify potentially bad commits](https://github.com/andrewsunglaekim/advanced_git_workshop#bisection-1536)
+- [Identify how realtive refs (`~` and `^` characters) are used to point at commits](https://github.com/andrewsunglaekim/advanced_git_workshop#targeting-commits-with-git-revisions-555)
+- [Reset git history using reset](https://github.com/andrewsunglaekim/advanced_git_workshop#git-reset-1570)
+- [Access reference logs to undo the terrible things](https://github.com/andrewsunglaekim/advanced_git_workshop#git-reflog1085)
+- [Use `git revert` to "revert" a commit](https://github.com/andrewsunglaekim/advanced_git_workshop#git-revert595)
+- [Identify how a merge results in a commit](https://github.com/andrewsunglaekim/advanced_git_workshop#git-merge-5105)
+- [Use git rebase to rewrite history onto a new branches tip](https://github.com/andrewsunglaekim/advanced_git_workshop#rebasing-5110)
 - [Identify some advantages and disadvantages of workflows involving rebase versus merge](https://github.com/andrewsunglaekim/advanced_git_workshop#merge-vs-rebase)
-- [Identify needs to force push to remote repositories](https://github.com/andrewsunglaekim/advanced_git_workshop#force-push5170)
-- [Identify the need to prioritize git workflows on teams](https://github.com/andrewsunglaekim/advanced_git_workshop#communication-5175)
+- [Identify needs to force push to remote repositories](https://github.com/andrewsunglaekim/advanced_git_workshop#force-push5120)
+- [Identify the need to prioritize git workflows on teams](https://github.com/andrewsunglaekim/advanced_git_workshop#communication-5125)
 - [Bonus!: Other useful commands](https://github.com/andrewsunglaekim/advanced_git_workshop#bonus-helpful-commands-that-dont-really-fit-into-the-flow-of-the-lesson-plan)
 
 > Much of this workshop is derived from two sources. [Git Book or Pro Git](https://git-scm.com/book/en/v2) and [Atlassian Tutorials](https://www.atlassian.com/git/tutorials). Highly recommend both for a wealth of knowledge on git. Most of the headers in this workshop's markdown are links to one of those two resources in the specified topic.
@@ -51,6 +51,9 @@ We'll try to dispel some of the fear caused by git commands by understanding exa
 It'll be impossible to cover the entirety of the git ecosystem, but we'll cover some useful tools for advanced git users. As well as establish a foundation of knowledge for the taxonomy we use in git.
 
 ## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (3/8)
+
+> Video 1 => 5:10
+
 When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
 #### "The Working Directory"
@@ -64,9 +67,14 @@ The final tree is the Commit History of HEAD. More specifically, it is the final
 
 
 ## HEAD (2/10)
+
+> Video 1 => 6:31
 It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When we hear something like the `HEAD` is on the tip of master, then we would be on the master branch.
 
 ## [Rehash commits and branches](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)(5/15)
+
+> Video 1 => 6:50
+
 Commits are changes to a repository. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
 
 Not only that, commits are aware of where they come from. IE. which commit(s) is/are my parent(s).
@@ -78,6 +86,9 @@ So when we say branches point to a commit, they quite literally hold a reference
 Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data structure to define git logs and have histories of commits even when commits themselves are only aware of their direct parents.
 
 ## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)(3/18)
+
+> Video 1 => 11:42
+
 As git users, we can inspect our changes in a variety of ways.
 
 `git show` ... shows us commit information and the git diff from the commit specified as the argument against it's direct parent(s)
@@ -115,6 +126,8 @@ $ git checkout -b some-branch-name
 ```
 
 ## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git) (15/36)
+
+> Video 1 => 16:40
 
 There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point the exact commit that breaks the code. Enter `git bisect`.
 
@@ -189,6 +202,8 @@ Pinpoint the commit in which the red background bug first occurs.
 
 ## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection) (5/55)
 
+> Video 2 => 00:50
+
 Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
 
 One way we saw earlier was providing an exact commit sha. We can also use branches as they point to a commit. What if we wanted something relative to a branch or the HEAD? IE. I want the parent of the the current commit `HEAD` is on.
@@ -231,6 +246,9 @@ HEAD~3^2
 > This would point to the commit that would be the second parent of the commit that is 3 commits behind the `HEAD`
 
 ## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (15/70)
+
+> Video 2 => 7:19
+
 The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting. In most cases, it rewrites history, when it's not it's resetting your working directory. Either way we stand to lose some change we've made. Definitely do not reset a branch's history that has been shared.
 
 `git reset` is a versatile tool for undoing changes. It is easiest to think about reset and its different flags in how it changes and modifies the [three trees of git](https://github.com/andrewsunglaekim/advanced_git_workshop#the-three-trees-515).
@@ -278,6 +296,9 @@ Now that we've identified the bug in our application. Let's do a hard reset on o
 Hint use `~` against the bad commit sha to find that commit.
 
 ## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)(10/85)
+
+> video 3 => 00:30
+
 With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
 
 The default expiration time for reflog entries is 90 days. So it's good to fix any immediate mistakes with the reference log, but certainly isn't going to be a possible solution if we've waited too long.
@@ -386,6 +407,8 @@ OH. NO. We lost some pretty crucial features when we did that last reset. We nee
 
 ## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)(5/95)
 
+> video 4 => 00:32
+
 Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
 
 ```
@@ -425,6 +448,9 @@ You're back to square 1, everything is red still. Fortunately you still have the
 2. Inspect the `index.html` in the browser.
 
 ## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) (5/105)
+
+> video 5 => 00:55
+
 When working with teams on a project, there will often be times where we need to pull changes from a remote repository. We have two main ways to integrate changes from the upstream. One most of us are familiar with is `git merge` the other not as well known method is `git rebase`.
 
 We can use `git merge` in order to combine two branches. The branch that we currently are on is the branch that gets merged into, and the argument to `git merge` is the branch we are trying to merge in.
@@ -434,6 +460,9 @@ We can use `git merge` in order to combine two branches. The branch that we curr
 When `git merge` is executed, git creates a new commit that represents the "change" of merging two branches together. This is generally a good thing when used "correctly". However, there is no real "correct" way, and every team/project needs to decide what strategy works for them. Just know that merging does create a commit when we start to talk about merging versus rebasing.
 
 ## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (5/110)
+
+> video 5 => 02:45
+
 Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
 
 [`git rebase`](https://git-scm.com/docs/git-rebase) finds the common ancestor between the branch that we want to rebase and the branch we're rebasing on to. It then "removes" the commits of the rebasing branch until that common ancestor. Then it moves the branch's(the one that's rebasing) tip to the tip of the branch we are rebasing on to. Then it reapplies the same commits that were removed on that new tip.
@@ -497,6 +526,8 @@ The golden rule of rebasing is:
 If we violate this rule, it's only because no one else is using our pushed code that we'd like to rebase.
 
 ## Merge vs Rebase
+
+> video 5 => 10:04
 
 So, which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream(pulling), version control should know about this merge happening and document it always.
 
