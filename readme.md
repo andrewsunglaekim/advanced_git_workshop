@@ -538,6 +538,9 @@ If we find ourselves asking if we should be rebasing or merging, the answer lies
 In general the way to get the best of both worlds is to rebase local changes we’ve made but haven’t shared yet before we push them in order to clean up history, but never rebase things we've pushed already. Then merge in rebased feature branches into our master branch or whichever branch is our "clean" one.
 
 ## Force Push(5/120)
+
+> video 3 => 13:04
+
 This is a scary one for sure.
 
 First off, if we are about to force push to a remote branch and someone else is also using that remote branch. We **DO NOT** do it.
@@ -558,6 +561,8 @@ This can have pretty disastrous effect if someone else is working off of that br
 In short, be very cognizant when leveraging a force push. And if we're unsure, it's better to ask someone.
 
 ## Communication (5/125)
+
+> video 3 => 14:12
 
 One of the most important tools in git team workflows is not any one command or git interface. It is communication. There aren't any tools or commands that can reduce the amount of merge conflicts. The only thing that can help on that end is good team communication.
 
