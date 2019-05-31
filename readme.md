@@ -52,7 +52,7 @@ It'll be impossible to cover the entirety of the git ecosystem, but we'll cover 
 
 ## [The three trees](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (3/8)
 
-> Video 1 => 5:10
+> [video for this section here](https://redventures-2.wistia.com/medias/kejbnuucn3)
 
 When we think about git, we can boil down a good amount of it's commands with how they influence the three "trees" of git:
 
@@ -68,12 +68,13 @@ The final tree is the Commit History of HEAD. More specifically, it is the final
 
 ## HEAD (2/10)
 
-> Video 1 => 6:31
+> [video for this section here](https://redventures-2.wistia.com/medias/erfuzpwm4q)
+
 It can be thought of as a symbolic reference to the currently checked-out commit. Where we currently are. When we hear something like the `HEAD` is on the tip of master, then we would be on the master branch.
 
 ## [Rehash commits and branches](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)(5/15)
 
-> Video 1 => 6:50
+> [video for this section here](https://redventures-2.wistia.com/medias/d30lumod6g)
 
 Commits are changes to a repository. More specifically they point to the exact moment when the change occurs, what changes occurred, and who made the changes.
 
@@ -87,7 +88,7 @@ Git leverages this [linked list](https://en.wikipedia.org/wiki/Linked_list) data
 
 ## [`show`](https://git-scm.com/docs/git-show) and [`checkout`](https://git-scm.com/docs/git-checkout)(3/18)
 
-> Video 1 => 11:42
+> [video for this section here](https://redventures-2.wistia.com/medias/8jj43vfuoj)
 
 As git users, we can inspect our changes in a variety of ways.
 
@@ -127,7 +128,7 @@ $ git checkout -b some-branch-name
 
 ## [Bisection](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git) (15/36)
 
-> Video 1 => 16:40
+> [video for this section here](https://redventures-2.wistia.com/medias/3u032nb7bs)
 
 There's been lots of times where we implement a feature, we think it's solid and nothing can go wrong with it. Then we continue on the project, 4 or 5 more features later, the initial feature we implemented breaks. We have no idea which feature let alone a commit that broke the code. It would be really difficult to pin point the exact commit that breaks the code. Enter `git bisect`.
 
@@ -202,7 +203,7 @@ Pinpoint the commit in which the red background bug first occurs.
 
 ## [Targeting commits with git revisions](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection) (5/55)
 
-> Video 2 => 00:50
+> [video for this section here](https://redventures-2.wistia.com/medias/qy2raqs2gp)
 
 Many features including `git bisect` leverage commit histories to target specific commits. In the case of bisection, git uses midway points of commit histories. As users of git, we're able to target commits in many ways.
 
@@ -247,7 +248,7 @@ HEAD~3^2
 
 ## [git reset](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (15/70)
 
-> Video 2 => 7:19
+> [video for this section here](https://redventures-2.wistia.com/medias/lbk5rfj95o)
 
 The following command could have disastrous effects on our `HEAD`'s history, the branch HEAD is on. Be very careful when resetting. In most cases, it rewrites history, when it's not it's resetting your working directory. Either way we stand to lose some change we've made. Definitely do not reset a branch's history that has been shared.
 
@@ -297,7 +298,7 @@ Hint use `~` against the bad commit sha to find that commit.
 
 ## [git reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)(10/85)
 
-> video 3 => 00:30
+> [video for this section here](https://redventures-2.wistia.com/medias/tc0tbg8tdl)
 
 With all these dangerous things we can do in git, surely there must be some way for us to backtrack on disastrous commands. There is! Enter the reference log.
 
@@ -407,7 +408,7 @@ OH. NO. We lost some pretty crucial features when we did that last reset. We nee
 
 ## [Git revert](https://www.atlassian.com/git/tutorials/undoing-changes/git-revert)(5/95)
 
-> video 4 => 00:32
+> [video for this section here](https://redventures-2.wistia.com/medias/f987xxeb53)
 
 Another way to "change history" is by not changing a commit but instead adding a new commit using `git revert`. `git revert` takes a specified commit and rolls back the changes made from that commit. Then has us stage changes to continue the revert. `git revert` simply creates a new commit that is the opposite of an existing commit.:
 
@@ -449,7 +450,7 @@ You're back to square 1, everything is red still. Fortunately you still have the
 
 ## [Git Merge](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) (5/105)
 
-> video 5 => 00:55
+> [video for this section here](https://redventures-2.wistia.com/medias/ceyd2sdg84)
 
 When working with teams on a project, there will often be times where we need to pull changes from a remote repository. We have two main ways to integrate changes from the upstream. One most of us are familiar with is `git merge` the other not as well known method is `git rebase`.
 
@@ -461,7 +462,7 @@ When `git merge` is executed, git creates a new commit that represents the "chan
 
 ## [Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (5/110)
 
-> video 5 => 02:45
+> [video for this section here](https://redventures-2.wistia.com/medias/26olkl2b6k)
 
 Similar to when we merge, [`git rebase`](https://git-scm.com/docs/git-rebase) is another way we can grab changes from the upstream. Merge is always a forward moving change record, an additional commit. Alternatively, rebase "rewrites" history.[`git rebase`](https://git-scm.com/docs/git-rebase) reapplies commits on top of another base tip.
 
@@ -527,7 +528,7 @@ If we violate this rule, it's only because no one else is using our pushed code 
 
 ## Merge vs Rebase
 
-> video 5 => 10:04
+> [video for this section here](https://redventures-2.wistia.com/medias/xlyj6036q7)
 
 So, which is better? Depends on who we ask. There are many differing opinions on this. One perspective is that the repository's commit history is a record of what actually happened. That is to say, if we are grabbing changes from upstream(pulling), version control should know about this merge happening and document it always.
 
