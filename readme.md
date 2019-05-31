@@ -540,7 +540,7 @@ In general the way to get the best of both worlds is to rebase local changes weâ
 
 ## Force Push(5/120)
 
-> video 3 => 13:04
+> [video for this section here](https://redventures-2.wistia.com/medias/nymsk6qfj0)
 
 This is a scary one for sure.
 
@@ -563,7 +563,7 @@ In short, be very cognizant when leveraging a force push. And if we're unsure, i
 
 ## Communication (5/125)
 
-> video 3 => 14:12
+> [video for this section here](https://redventures-2.wistia.com/medias/2e2g23ol0s)
 
 One of the most important tools in git team workflows is not any one command or git interface. It is communication. There aren't any tools or commands that can reduce the amount of merge conflicts. The only thing that can help on that end is good team communication.
 
